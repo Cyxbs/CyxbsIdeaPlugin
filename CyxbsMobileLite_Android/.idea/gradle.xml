@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+                <projects>
+                  <project path="$PROJECT_DIR$/build-logic" />
+                  <project path="$PROJECT_DIR$/build-logic/dependencies" />
+                  <project path="$PROJECT_DIR$/build-logic/dependencies/library" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/build-logic" />
+            <option value="$PROJECT_DIR$/build-logic/dependencies" />
+            <option value="$PROJECT_DIR$/build-logic/dependencies/library" />
+            <option value="$PROJECT_DIR$/cyxbs-applications" />
+            <option value="$PROJECT_DIR$/cyxbs-applications/cyxbs-lite" />
+            <option value="$PROJECT_DIR$/cyxbs-components" />
+            <option value="$PROJECT_DIR$/cyxbs-components/account" />
+            <option value="$PROJECT_DIR$/cyxbs-functions" />
+            <option value="$PROJECT_DIR$/cyxbs-functions/debug" />
+            <option value="$PROJECT_DIR$/cyxbs-pages" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/exam" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
