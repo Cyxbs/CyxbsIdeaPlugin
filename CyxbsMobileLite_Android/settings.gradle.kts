@@ -19,4 +19,4 @@ include(":cyxbs-functions:debug")
 
 // cyxbs-pages
 include(":cyxbs-pages:exam")
-include(":cyxbs-pages:exam")
+include(":cyxbs-pages:exam:api-exam")

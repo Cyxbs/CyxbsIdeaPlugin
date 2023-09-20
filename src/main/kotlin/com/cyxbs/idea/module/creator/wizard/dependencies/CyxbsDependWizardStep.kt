@@ -79,10 +79,6 @@ class CyxbsDependWizardStep : ModuleWizardStep() {
 
   // 每次进入下一页都会回调该方法，但这个类的对象都是同一个
   override fun getComponent(): JComponent {
-    println(
-      ".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-          "getComponent"
-    )
     return mTopLevelPanel
   }
 

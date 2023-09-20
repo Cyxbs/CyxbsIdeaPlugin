@@ -22,6 +22,7 @@ import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.io.File
+import java.util.Properties
 import javax.swing.JPanel
 
 object GroupManager {
@@ -156,19 +157,44 @@ object GroupManager {
     moduleDirs.sort()
     moduleDirs.mapNotNull { group ->
       group.listFiles { module ->
-        !module.resolve(".ignoreModuleBuilder").exists()
+        getModuleProperties(module)?.getProperty("idea.plugin.module.builder.depend") != "false"
             && module.resolve("build.gradle.kts").exists()
-      }?.map { module ->
-        if (module.resolve("api-${module.name}").exists()) {
-          module.resolve("api-${module.name}")
-        } else module
+      }?.mapNotNull { module ->
+        when (group.name) {
+          "cyxbs-components" -> module
+          "cyxbs-functions" -> module.resolve("api-${module.name}").let { if (it.exists()) it else module }
+          "cyxbs-pages" -> module.resolve("api-${module.name}").let { if (it.exists()) it else null }
+          else -> null
+        }
       }?.sorted()?.let { group to it }
     }.forEach { pair ->
       result[pair.first.name] = TreeNodeData(pair.first.name, "", CheckableType.Catalog, TreeNodeType.ParentNode(
         pair.second.map {
-          TreeNodeData(it.name, "", CheckableType.Checkbox(), TreeNodeType.LeafNode)
+          TreeNodeData(it.name,
+            getModuleProperties(it)?.getProperty("idea.plugin.module.builder.description") ?: "",
+            CheckableType.Checkbox(), TreeNodeType.LeafNode)
         }
       ))
     }
+  }
+
+
+  private val mModuleProperties = HashMap<File, Properties>()
+  fun getModuleProperties(file: File): Properties? {
+    if (mModuleProperties.contains(file)) return mModuleProperties.getValue(file)
+    if (file.resolve("build.gradle.kts").exists()) {
+      val propertiesFile = file.resolve("module.properties")
+      if (propertiesFile.exists()) {
+        val properties = Properties()
+        return try {
+          properties.load(propertiesFile.inputStream().reader())
+          mModuleProperties[file] = properties
+          properties
+        } catch (e: Exception) {
+          null
+        }
+      }
+    }
+    return null
   }
 }

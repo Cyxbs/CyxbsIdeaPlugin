@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/cyxbs-functions/debug" />
             <option value="$PROJECT_DIR$/cyxbs-pages" />
             <option value="$PROJECT_DIR$/cyxbs-pages/exam" />
+            <option value="$PROJECT_DIR$/cyxbs-pages/exam/api-exam" />
           </set>
         </option>
       </GradleProjectSettings>

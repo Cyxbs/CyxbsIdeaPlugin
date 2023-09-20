@@ -56,8 +56,6 @@ class CyxbsNewProjectWizardStep(
           .apply { commentProperty.afterChange { comment?.text = it } }
       }
       onApply {
-        println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-          "onApply")
         // 点击 next 到下一页时回调
         GroupManager.updateDependWizardStep(step)
       }
