@@ -1,8 +1,11 @@
 package com.cyxbs.idea.module.creator.wizard.group.components
 
 import com.cyxbs.idea.module.creator.wizard.combine.CombineWizardStep
+import com.cyxbs.idea.module.creator.wizard.file.FileBuilder
+import com.cyxbs.idea.module.creator.wizard.group.GroupManager
 import com.cyxbs.idea.module.creator.wizard.singlemodule.SingleModuleWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
+import com.intellij.openapi.project.Project
 
 class ComponentsWizardStep(
   parent: NewProjectWizardStep
@@ -10,7 +13,12 @@ class ComponentsWizardStep(
 
   override fun createStep(): List<NewProjectWizardStep> = listOf(
     SingleModuleWizardStep(this),
-//    DependenciesWizardStep(this, emptyList()),
-//    DependModuleWizardStep(this, emptyList()),
   )
+
+  override fun setupProject(project: Project) {
+    super.setupProject(project)
+    val moduleFile = GroupManager.getModuleFile(project) ?: return
+    FileBuilder.createSrc(moduleFile, "components")
+    FileBuilder.insertInclude(project, moduleFile.name, "components")
+  }
 }

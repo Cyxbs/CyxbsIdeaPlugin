@@ -20,6 +20,8 @@ import javax.swing.tree.TreeSelectionModel
  * 用于显示依赖列表的选择控件
  *
  * 逻辑来自官方 StarterLibrariesStep 中的 librariesList
+ *
+ * @param selectedCallback 被选中的所有列表回调
  */
 class LibrariesListPanel(
   private val selectedCallback: (List<TreeNodeData>) -> Unit,

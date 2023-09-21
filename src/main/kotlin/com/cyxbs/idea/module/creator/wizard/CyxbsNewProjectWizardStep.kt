@@ -7,6 +7,7 @@ import com.intellij.ide.wizard.NewProjectWizardStep
 import com.intellij.openapi.observable.util.joinCanonicalPath
 import com.intellij.openapi.observable.util.transform
 import com.intellij.openapi.observable.util.trim
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.validation.*
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.dsl.builder.*
@@ -56,10 +57,19 @@ class CyxbsNewProjectWizardStep(
           .apply { commentProperty.afterChange { comment?.text = it } }
       }
       onApply {
+        println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+          "onApply")
         // 点击 next 到下一页时回调
         GroupManager.updateDependWizardStep(step)
       }
     }
+    stepProperty.afterChange {
+      GroupManager.stepName = it
+    }
+    newProjectNameProperty.afterChange {
+      GroupManager.moduleName = it
+    }
     super.setupUI(builder)
   }
+
 }

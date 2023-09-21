@@ -98,16 +98,9 @@ object GroupManager {
       ".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
           "createWizardSteps"
     )
-    return when (wizardContext.projectName) {
-      "cyxbs-applications" -> emptyArray()
-      else -> {
-        if (checkCyxbsMobileLite(wizardContext.project?.basePath)) {
-          val wizardStep = CyxbsDependWizardStep()
-          mCyxbsDependWizardStep = wizardStep
-          arrayOf(wizardStep)
-        } else emptyArray()
-      }
-    }
+    val wizardStep = CyxbsDependWizardStep(wizardContext)
+    mCyxbsDependWizardStep = wizardStep
+    return arrayOf(wizardStep)
   }
 
   fun getStepMap(groupName: String, parent: NewProjectWizardStep): Map<String, NewProjectWizardStep> {
@@ -180,6 +173,7 @@ object GroupManager {
 
 
   private val mModuleProperties = HashMap<File, Properties>()
+
   fun getModuleProperties(file: File): Properties? {
     if (mModuleProperties.contains(file)) return mModuleProperties.getValue(file)
     if (file.resolve("build.gradle.kts").exists()) {
@@ -196,5 +190,24 @@ object GroupManager {
       }
     }
     return null
+  }
+
+  var stepName: String? = null
+  var moduleName: String? = null
+
+  fun getModuleFile(project: Project?): File? {
+    project ?: return null
+    val stepName = stepName ?: return null
+    val moduleName = moduleName ?: return null
+    val basePath = project.basePath ?: return null
+    if (!checkCyxbsMobileLite(basePath)) return null
+    val projectFile = File(basePath)
+    return when (stepName) {
+      "applications" -> projectFile.resolve("cyxbs-applications").resolve(moduleName)
+      "components" -> projectFile.resolve("cyxbs-components").resolve(moduleName)
+      "functions" -> projectFile.resolve("cyxbs-functions").resolve(moduleName)
+      "pages" -> projectFile.resolve("cyxbs-pages").resolve(moduleName)
+      else -> null
+    }
   }
 }

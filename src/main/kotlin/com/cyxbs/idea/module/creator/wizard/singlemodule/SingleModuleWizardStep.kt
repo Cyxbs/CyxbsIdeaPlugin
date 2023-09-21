@@ -1,5 +1,7 @@
 package com.cyxbs.idea.module.creator.wizard.singlemodule
 
+import com.cyxbs.idea.module.creator.wizard.file.FileBuilder
+import com.cyxbs.idea.module.creator.wizard.group.GroupManager
 import com.intellij.ide.wizard.AbstractNewProjectWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
 import com.intellij.openapi.project.Project
@@ -24,6 +26,7 @@ open class SingleModuleWizardStep(
   }
 
   override fun setupProject(project: Project) {
-    // todo
+    val moduleFile = GroupManager.getModuleFile(project) ?: return
+    FileBuilder.appendModulePlugin(moduleFile, singleModuleProperty.get())
   }
 }

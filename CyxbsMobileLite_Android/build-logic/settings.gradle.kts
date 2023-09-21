@@ -25,5 +25,6 @@ rootProject.name = "build-logic"
 include(":dependencies:library")
 
 // module
+include(":module")
 
 // plugin

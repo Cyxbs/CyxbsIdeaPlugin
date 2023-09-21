@@ -12,6 +12,7 @@
                   <project path="$PROJECT_DIR$/build-logic" />
                   <project path="$PROJECT_DIR$/build-logic/dependencies" />
                   <project path="$PROJECT_DIR$/build-logic/dependencies/library" />
+                  <project path="$PROJECT_DIR$/build-logic/module" />
                 </projects>
               </build>
             </builds>
@@ -24,6 +25,7 @@
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/dependencies" />
             <option value="$PROJECT_DIR$/build-logic/dependencies/library" />
+            <option value="$PROJECT_DIR$/build-logic/module" />
             <option value="$PROJECT_DIR$/cyxbs-applications" />
             <option value="$PROJECT_DIR$/cyxbs-applications/cyxbs-lite" />
             <option value="$PROJECT_DIR$/cyxbs-components" />
