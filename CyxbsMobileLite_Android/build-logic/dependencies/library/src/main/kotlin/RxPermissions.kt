@@ -15,7 +15,7 @@ object RxPermissions {
   const val rxpermissions = "com.github.tbruyelle:rxpermissions:0.12"
 }
 
-fun LibraryScope.dependRxPermissions() {
+fun DependLibraryScope.dependRxPermissions() {
   dependencies {
     "implementation"(RxPermissions.rxpermissions)
   }

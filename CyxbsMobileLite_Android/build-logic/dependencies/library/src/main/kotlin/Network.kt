@@ -24,19 +24,19 @@ object Network {
   const val gson = "com.google.code.gson:gson:2.10.1"
 }
 
-fun LibraryScope.dependRetrofit() {
+fun DependLibraryScope.dependRetrofit() {
   dependencies {
     "implementation"(Network.retrofit)
   }
 }
 
-fun LibraryScope.dependOkHttp() {
+fun DependLibraryScope.dependOkHttp() {
   dependencies {
     "implementation"(Network.okhttp)
   }
 }
 
-fun LibraryScope.dependGson() {
+fun DependLibraryScope.dependGson() {
   dependencies {
     "implementation"(Network.gson)
   }

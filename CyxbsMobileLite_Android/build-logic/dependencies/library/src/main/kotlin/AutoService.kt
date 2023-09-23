@@ -17,7 +17,7 @@ object AutoService {
   val autoService = "com.google.auto.service:auto-service:$version"
 }
 
-fun LibraryScope.dependAutoService() {
+fun DependLibraryScope.dependAutoService() {
   // kapt 按需引入
   apply(plugin = "org.jetbrains.kotlin.kapt")
   dependencies {

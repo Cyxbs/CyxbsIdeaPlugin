@@ -20,7 +20,7 @@ object Glide {
 //  const val `glide-compiler` = "com.github.bumptech.glide:compiler:$glide_version"
 }
 
-fun LibraryScope.dependGlide() {
+fun DependLibraryScope.dependGlide() {
   dependencies {
     "implementation"(Glide.glide)
   }

@@ -29,7 +29,7 @@ object Navigation {
  * 3、所以我个人建议是：能用 vp2 的都用 vp2，navigation 应该用在 vp2 的某一个页面中
  */
 @Deprecated("navigation 因为有些”坑“，所以暂不使用，大部分情况可以使用 vp2 代替")
-fun LibraryScope.dependNavigation() {
+fun DependLibraryScope.dependNavigation() {
   dependencies {
     "implementation"(Navigation.`navigation-runtime-ktx`)
     "implementation"(Navigation.`navigation-fragment-ktx`)

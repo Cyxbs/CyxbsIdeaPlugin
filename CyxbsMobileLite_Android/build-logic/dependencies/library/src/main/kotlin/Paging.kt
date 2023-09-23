@@ -16,13 +16,13 @@ object Paging {
   const val `paging-rxjava3` = "androidx.paging:paging-rxjava3:$paging_version"
 }
 
-fun LibraryScope.dependPaging() {
+fun DependLibraryScope.dependPaging() {
   dependencies {
     "implementation"(Paging.`paging-runtime`)
   }
 }
 
-fun LibraryScope.dependPagingRx() {
+fun DependLibraryScope.dependPagingRx() {
   dependencies {
     "implementation"(Paging.`paging-rxjava3`)
   }

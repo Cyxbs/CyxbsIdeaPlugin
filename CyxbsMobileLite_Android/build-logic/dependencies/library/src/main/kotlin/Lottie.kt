@@ -16,7 +16,7 @@ object Lottie {
   const val lottie = "com.airbnb.android:lottie:6.1.0"
 }
 
-fun LibraryScope.dependLottie() {
+fun DependLibraryScope.dependLottie() {
   dependencies {
     "implementation"(Lottie.lottie)
   }

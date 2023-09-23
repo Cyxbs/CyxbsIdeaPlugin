@@ -1,0 +1,19 @@
+plugins {
+#if($IS_SINGLE_MODULE)
+  id("module-single")
+#else
+  id("module-manager")
+#end
+}
+
+dependModule {
+#foreach ($item in $MODULES)
+  $item
+#end
+}
+
+dependLibrary {
+#foreach ($item in $LIBRARIES)
+  $item
+#end
+}

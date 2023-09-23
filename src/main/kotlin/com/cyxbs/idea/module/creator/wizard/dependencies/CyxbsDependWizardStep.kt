@@ -1,10 +1,7 @@
 package com.cyxbs.idea.module.creator.wizard.dependencies
 
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.TreeNodeData
-import com.cyxbs.idea.module.creator.wizard.file.FileBuilder
-import com.cyxbs.idea.module.creator.wizard.group.GroupManager
-import com.intellij.ide.projectWizard.NewProjectWizardCollector.Companion.logGitChanged
-import com.intellij.ide.projectWizard.NewProjectWizardCollector.Companion.logGitFinished
+import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.ide.wizard.withVisualPadding
@@ -12,12 +9,6 @@ import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.util.ui.components.BorderLayoutPanel
 import javax.swing.JComponent
-import com.intellij.ide.projectWizard.NewProjectWizardCollector.Companion.logProjectCreated
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskType
-import com.intellij.openapi.externalSystem.util.ExternalSystemUtil
-import org.jetbrains.plugins.gradle.settings.GradleExecutionSettings
-import org.jetbrains.plugins.gradle.util.GradleConstants
 
 class CyxbsDependWizardStep(
   private val context: WizardContext
@@ -98,19 +89,14 @@ class CyxbsDependWizardStep(
   override fun updateDataModel() {
     println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
       "updateDataModel")
-    val moduleFile = GroupManager.getModuleFile(context.project) ?: return
-    println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-      "moduleFile = $moduleFile")
-    FileBuilder.appendDependModule(moduleFile, mSelectedModules.map { data ->
+    FileBuilderWizardStep.Modules = mSelectedModules.map { data ->
       val name = data.title.split("-").joinToString("") { ele ->
         ele.replaceFirstChar { it.uppercaseChar() }
       }
       "depend$name()"
-    })
-    FileBuilder.appendDependLibrary(moduleFile, mSelectedLibraries.map { data ->
+    }
+    FileBuilderWizardStep.Libraries = mSelectedLibraries.map { data ->
       "depend${data.title}()"
-    })
-//    val project = context.project ?: return
-//    project.projectFile?.refresh(true, true)
+    }
   }
 }

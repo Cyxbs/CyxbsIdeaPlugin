@@ -1,6 +1,7 @@
 package com.cyxbs.idea.module.creator.wizard
 
 import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
+import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
 import com.cyxbs.idea.module.creator.wizard.group.GroupManager
 import com.intellij.ide.wizard.AbstractNewProjectWizardMultiStepBase
 import com.intellij.ide.wizard.NewProjectWizardStep
@@ -63,13 +64,12 @@ class CyxbsNewProjectWizardStep(
         GroupManager.updateDependWizardStep(step)
       }
     }
-    stepProperty.afterChange {
-      GroupManager.stepName = it
-    }
-    newProjectNameProperty.afterChange {
-      GroupManager.moduleName = it
-    }
     super.setupUI(builder)
   }
 
+  override fun setupProject(project: Project) {
+    super.setupProject(project)
+    FileBuilderWizardStep.StepName = step
+    FileBuilderWizardStep.ModuleName = newProjectName
+  }
 }

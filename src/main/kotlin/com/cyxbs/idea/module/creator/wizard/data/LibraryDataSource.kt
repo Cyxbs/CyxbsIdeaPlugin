@@ -31,9 +31,9 @@ object LibraryDataSource : TreeNodeDataSource() {
 
   private fun readFile(file: File): TreeNodeData? {
     val librariesName = file.readLines().filter {
-      it.startsWith("fun LibraryScope.depend")
+      it.startsWith("fun DependLibraryScope.depend")
     }.map {
-      it.substringAfter("fun LibraryScope.depend")
+      it.substringAfter("fun DependLibraryScope.depend")
         .substringBeforeLast("(")
     }
     if (librariesName.isEmpty()) return null

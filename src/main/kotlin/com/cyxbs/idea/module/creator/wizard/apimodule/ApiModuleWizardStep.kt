@@ -1,7 +1,6 @@
 package com.cyxbs.idea.module.creator.wizard.apimodule
 
-import com.cyxbs.idea.module.creator.wizard.file.FileBuilder
-import com.cyxbs.idea.module.creator.wizard.group.GroupManager
+import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
 import com.intellij.ide.wizard.AbstractNewProjectWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
 import com.intellij.openapi.project.Project
@@ -28,13 +27,7 @@ class ApiModuleWizardStep(
   }
 
   override fun setupProject(project: Project) {
-    if (apiModuleProperty.get()) {
-      val stepName = GroupManager.stepName ?: return
-      val moduleName = GroupManager.moduleName ?: return
-      val apiModuleFile = GroupManager.getModuleFile(project)?.resolve("api-$moduleName") ?: return
-      FileBuilder.createSrc(apiModuleFile, stepName)
-      FileBuilder.appendModulePlugin(apiModuleFile, false)
-      FileBuilder.insertInclude(project, apiModuleFile.name, stepName)
-    }
+    super.setupProject(project)
+    FileBuilderWizardStep.NeedApiModule = apiModuleProperty.get()
   }
 }

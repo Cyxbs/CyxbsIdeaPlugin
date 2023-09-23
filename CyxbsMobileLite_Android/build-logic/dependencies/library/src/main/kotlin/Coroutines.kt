@@ -20,7 +20,7 @@ object Coroutines {
   const val `coroutines-rx3` = "org.jetbrains.kotlinx:kotlinx-coroutines-rx3:$coroutines_version"
 }
 
-fun LibraryScope.dependCoroutines() {
+fun DependLibraryScope.dependCoroutines() {
   dependencies {
     "implementation"(Coroutines.`coroutines-android`)
   }
@@ -29,7 +29,7 @@ fun LibraryScope.dependCoroutines() {
 /**
  * 包含 Flow 与 Rxjava3 的互转
  */
-fun LibraryScope.dependCoroutines2Rx() {
+fun DependLibraryScope.dependCoroutines2Rx() {
   dependencies {
     "implementation"(Coroutines.`coroutines-rx3`)
   }

@@ -2,8 +2,6 @@ package com.cyxbs.idea.module.creator.wizard.group.pages
 
 import com.cyxbs.idea.module.creator.wizard.apimodule.ApiModuleWizardStep
 import com.cyxbs.idea.module.creator.wizard.combine.CombineWizardStep
-import com.cyxbs.idea.module.creator.wizard.file.FileBuilder
-import com.cyxbs.idea.module.creator.wizard.group.GroupManager
 import com.cyxbs.idea.module.creator.wizard.singlemodule.SingleModuleWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
 import com.intellij.openapi.project.Project
@@ -19,8 +17,7 @@ class PagesWizardStep(
 
   override fun setupProject(project: Project) {
     super.setupProject(project)
-    val moduleFile = GroupManager.getModuleFile(project) ?: return
-    FileBuilder.createSrc(moduleFile, "pages")
-    FileBuilder.insertInclude(project, moduleFile.name, "pages")
+    println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
+      "setupProject")
   }
 }

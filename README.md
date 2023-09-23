@@ -11,9 +11,10 @@
 - Swing
 - [idea 插件官方文档](https://plugins.jetbrains.com/docs/intellij/welcome.html)
 - 官方项目
-  - JavaFxModuleBuilder (需添加 javaFX 即可查看源码)
-  - MavenArchetypeNewProjectWizard (需添加 maven 即可查看源码)
-  - AndroidModuleBuilder (需添加 android 即可查看源码)
+  - NewModuleBuilder
+  - JavaFxModuleBuilder (plugins 需添加 javaFX)
+  - MavenArchetypeNewProjectWizard (plugins 需添加 maven)
+  - AndroidModuleBuilder (plugins 需添加 android)
 - 其他学习资料
   - [掘金: Android Studio IDE 插件开发](https://juejin.cn/post/7020033392422944804)
   - [Mirai idea 插件](https://github.com/mamoe/mirai/tree/dev/mirai-console/tools/intellij-plugin)

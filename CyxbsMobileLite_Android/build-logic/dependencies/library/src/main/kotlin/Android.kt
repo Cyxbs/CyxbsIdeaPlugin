@@ -55,7 +55,7 @@ object Android {
 /**
  * 所有使用 build-logic 插件的模块都默认依赖了该 Android 最基础依赖
  */
-fun LibraryScope._dependAndroidBase() {
+fun DependLibraryScope._dependAndroidBase() {
   dependencies {
     "implementation"(Android.appcompat)
   }
@@ -66,7 +66,7 @@ fun LibraryScope._dependAndroidBase() {
 *
 * 如果你的 api 模块需要使用，建议自己按需依赖，一般情况下 api 模块是不需要这些东西的
 * */
-fun LibraryScope._dependAndroidView() {
+fun DependLibraryScope._dependAndroidView() {
   dependencies {
     "implementation"(Android.constraintlayout)
     "implementation"(Android.recyclerview)
@@ -83,7 +83,7 @@ fun LibraryScope._dependAndroidView() {
 *
 * 如果你的 api 模块需要使用，建议自己按需依赖，一般情况下 api 模块是不需要这些东西的
 * */
-fun LibraryScope._dependAndroidKtx() {
+fun DependLibraryScope._dependAndroidKtx() {
   dependencies {
     "implementation"(Android.`core-ktx`)
     "implementation"(Android.`collection-ktx`)

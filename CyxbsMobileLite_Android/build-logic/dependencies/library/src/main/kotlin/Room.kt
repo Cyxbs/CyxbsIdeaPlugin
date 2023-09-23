@@ -1,7 +1,7 @@
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import com.google.devtools.ksp.gradle.KspExtension
+//import com.google.devtools.ksp.gradle.KspExtension
 
 /**
  * ...
@@ -23,13 +23,13 @@ object Room {
   const val `room-paging` = "androidx.room:room-paging:$room_version"
 }
 
-fun LibraryScope.dependRoom() {
+fun DependLibraryScope.dependRoom() {
   // ksp 按需引入
-  apply(plugin = "com.google.devtools.ksp")
-  extensions.configure<KspExtension> {
-    arg("room.schemaLocation", "${project.projectDir}/schemas") // room 的架构导出目录
-    arg("room.incremental", "true")
-  }
+//  apply(plugin = "com.google.devtools.ksp")
+//  extensions.configure<KspExtension> {
+//    arg("room.schemaLocation", "${project.projectDir}/schemas") // room 的架构导出目录
+//    arg("room.incremental", "true")
+//  }
   dependencies {
     "implementation"(Room.`room-runtime`)
     "implementation"(Room.`room-ktx`)
@@ -37,13 +37,13 @@ fun LibraryScope.dependRoom() {
   }
 }
 
-fun LibraryScope.dependRoomRxjava() {
+fun DependLibraryScope.dependRoomRxjava() {
   dependencies {
     "implementation"(Room.`room-rxjava3`)
   }
 }
 
-fun LibraryScope.dependRoomPaging() {
+fun DependLibraryScope.dependRoomPaging() {
   dependencies {
     "implementation"(Room.`room-paging`)
   }

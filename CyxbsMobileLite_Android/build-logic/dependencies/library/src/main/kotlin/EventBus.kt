@@ -15,7 +15,7 @@ object EventBus {
   const val eventBus = "org.greenrobot:eventbus:3.3.1"
 }
 
-fun LibraryScope.dependEventBus() {
+fun DependLibraryScope.dependEventBus() {
   dependencies {
     "implementation"(EventBus.eventBus)
   }

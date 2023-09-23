@@ -19,7 +19,7 @@ object Rxjava {
   const val `rxjava3-kotlin` = "io.reactivex.rxjava3:rxkotlin:3.0.1"
 }
 
-fun LibraryScope.dependRxjava() {
+fun DependLibraryScope.dependRxjava() {
   dependencies {
     "implementation"(Rxjava.rxjava3)
     "implementation"(Rxjava.`rxjava3-android`)

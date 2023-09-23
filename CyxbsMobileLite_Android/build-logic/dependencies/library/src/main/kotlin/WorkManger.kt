@@ -13,7 +13,7 @@ object WorkManger {
   const val `work-runtime-ktx` = "androidx.work:work-runtime-ktx:2.8.1"
 }
 
-fun LibraryScope.dependWorkManger() {
+fun DependLibraryScope.dependWorkManger() {
   dependencies {
     "implementation"(WorkManger.`work-runtime-ktx`)
   }

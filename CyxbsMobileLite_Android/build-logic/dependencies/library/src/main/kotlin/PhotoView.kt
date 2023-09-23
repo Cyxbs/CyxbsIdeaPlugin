@@ -15,7 +15,7 @@ object PhotoView {
   const val photoView = "com.github.chrisbanes:PhotoView:2.3.0"
 }
 
-fun LibraryScope.dependPhotoView() {
+fun DependLibraryScope.dependPhotoView() {
   dependencies {
     "implementation"(PhotoView.photoView)
   }

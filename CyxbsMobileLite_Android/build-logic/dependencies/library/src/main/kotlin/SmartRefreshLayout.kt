@@ -30,7 +30,7 @@ object SmartRefreshLayout {
   const val `footer-classics` = "io.github.scwang90:refresh-footer-classics:$version" //经典加载
 }
 
-fun LibraryScope.dependSmartRefreshLayout() {
+fun DependLibraryScope.dependSmartRefreshLayout() {
   dependencies {
     "implementation"(SmartRefreshLayout.kernel)
     /*

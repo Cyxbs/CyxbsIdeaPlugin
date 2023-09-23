@@ -39,7 +39,7 @@ object Lifecycle {
 *
 * 如果你的 api 模块需要使用，建议自己按需依赖，一般情况下 api 模块是不需要这些东西的
 * */
-fun LibraryScope._dependLifecycleKtx() {
+fun DependLibraryScope._dependLifecycleKtx() {
   dependencies {
     "implementation"(Lifecycle.`viewmodel-ktx`)
     "implementation"(Lifecycle.`livedata-ktx`)
@@ -48,14 +48,14 @@ fun LibraryScope._dependLifecycleKtx() {
 }
 
 // 带有 Lifecycle 的 Service
-fun LibraryScope.dependLifecycleService() {
+fun DependLibraryScope.dependLifecycleService() {
   dependencies {
     "implementation"(Lifecycle.`lifecycle-service`)
   }
 }
 
 // LiveData 转换成 Rxjava 或者 Flow
-fun LibraryScope.dependLiveData2RxFlow() {
+fun DependLibraryScope.dependLiveData2RxFlow() {
   dependencies {
     "implementation"(Lifecycle.`lifecycle-reactivestreams-ktx`)
   }
@@ -63,7 +63,7 @@ fun LibraryScope.dependLiveData2RxFlow() {
 
 // 应用的声明周期 ProcessLifecycleOwner
 // 建议使用项目中的 processLifecycle
-fun LibraryScope.dependLifecycleProcess() {
+fun DependLibraryScope.dependLifecycleProcess() {
   dependencies {
     "implementation"(Lifecycle.`lifecycle-process`)
   }
