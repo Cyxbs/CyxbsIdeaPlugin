@@ -2,11 +2,10 @@ package com.cyxbs.idea.module.creator
 
 import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
 import com.cyxbs.idea.module.creator.wizard.CyxbsNewProjectWizardStep
-import com.cyxbs.idea.module.creator.wizard.data.LibraryDataSource
-import com.cyxbs.idea.module.creator.wizard.data.ModulesDataSource
+import com.cyxbs.idea.module.creator.libraries.LibraryDataSource
+import com.cyxbs.idea.module.creator.modules.ModulesDataSource
 import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
 import com.cyxbs.idea.module.creator.wizard.group.GroupManager
-import com.intellij.ide.util.projectWizard.JavaModuleBuilder
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.ide.wizard.*
@@ -44,8 +43,8 @@ class CyxbsModuleBuilder : AbstractNewProjectWizardBuilder() {
    * context.projectName    选中的模块名称
    */
   override fun createStep(context: WizardContext): NewProjectWizardStep {
-    LibraryDataSource.loadData(context.project?.basePath)
-    ModulesDataSource.loadData(context.project?.basePath)
+    LibraryDataSource.loadData(context.project)
+    ModulesDataSource.loadData(context.project)
     return RootNewProjectWizardStep(context)
       .chain(::CyxbsNewProjectWizardStep)
       .chain(::FileBuilderWizardStep) // 创建文件的需要放在最后

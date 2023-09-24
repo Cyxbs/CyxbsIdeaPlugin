@@ -1,16 +1,15 @@
 package com.cyxbs.idea.module.creator.wizard.group
 
 import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
-import com.cyxbs.idea.module.creator.wizard.data.LibraryDataSource
-import com.cyxbs.idea.module.creator.wizard.data.ModulesDataSource
+import com.cyxbs.idea.module.creator.libraries.LibraryDataSource
+import com.cyxbs.idea.module.creator.wizard.cyxbs.applications.ApplicationsWizardStep
+import com.cyxbs.idea.module.creator.wizard.cyxbs.components.ComponentsWizardStep
+import com.cyxbs.idea.module.creator.wizard.cyxbs.functions.FunctionsWizardStep
+import com.cyxbs.idea.module.creator.wizard.cyxbs.pages.PagesWizardStep
 import com.cyxbs.idea.module.creator.wizard.dependencies.CyxbsDependWizardStep
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.CheckableType
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.TreeNodeData
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.TreeNodeType
-import com.cyxbs.idea.module.creator.wizard.group.applications.ApplicationsWizardStep
-import com.cyxbs.idea.module.creator.wizard.group.components.ComponentsWizardStep
-import com.cyxbs.idea.module.creator.wizard.group.functions.FunctionsWizardStep
-import com.cyxbs.idea.module.creator.wizard.group.pages.PagesWizardStep
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.ide.wizard.NewProjectWizardStep
@@ -127,17 +126,17 @@ object GroupManager {
       return
     }
     val libraries = LibraryDataSource.getData()
-    val modules = ModulesDataSource.getData()
-    when (step) {
-      "pages" -> mCyxbsDependWizardStep?.update(libraries.values, modules.values)
-      "functions" -> mCyxbsDependWizardStep?.update(libraries.values, modules.values)
-      "components" -> {
-        mCyxbsDependWizardStep?.update(
-          listOf(libraries.getValue("cyxbs-components")),
-          listOf(modules.getValue("cyxbs-components"))
-        )
-      }
-    }
+//    val modules = ModulesDataSource.getData()
+//    when (step) {
+//      "pages" -> mCyxbsDependWizardStep?.update(libraries.values, modules.values)
+//      "functions" -> mCyxbsDependWizardStep?.update(libraries.values, modules.values)
+//      "components" -> {
+//        mCyxbsDependWizardStep?.update(
+//          listOf(libraries.getValue("cyxbs-components")),
+//          listOf(modules.getValue("cyxbs-components"))
+//        )
+//      }
+//    }
   }
 
   fun readData(rootProjectPath: String, result: LinkedHashMap<String, TreeNodeData>) {
