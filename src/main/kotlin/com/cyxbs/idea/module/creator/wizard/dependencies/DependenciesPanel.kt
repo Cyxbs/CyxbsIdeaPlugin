@@ -1,21 +1,18 @@
 package com.cyxbs.idea.module.creator.wizard.dependencies
 
-import com.cyxbs.idea.module.creator.utils.gridConstraint
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.TreeNodeData
 import com.cyxbs.idea.module.creator.wizard.dependencies.desription.LibraryDescriptionPanel
 import com.cyxbs.idea.module.creator.wizard.dependencies.libraries.LibrariesListPanel
 import com.cyxbs.idea.module.creator.wizard.dependencies.selected.SelectedLibrariesPanel
 import com.intellij.ui.components.JBScrollPane
-import com.intellij.util.ui.JBUI
-import com.intellij.util.ui.UIUtil
 import java.awt.Dimension
-import java.awt.GridBagLayout
+import java.awt.GridLayout
 import javax.swing.JPanel
 import javax.swing.tree.DefaultMutableTreeNode
 
 class DependenciesPanel(
   private val selectedCallback: (List<TreeNodeData>) -> Unit
-) : JPanel(GridBagLayout()) {
+) : JPanel(GridLayout(1, 3)) {
 
   // 右上方的依赖描述
   private val mLibraryDescriptionPanel = LibraryDescriptionPanel()
@@ -39,8 +36,7 @@ class DependenciesPanel(
 
   init {
     val height = 260
-    setLeftPanel(height)
-    setRightPanel(height)
+    setPanel(height)
     observeLibrariesSelected()
   }
 
@@ -48,23 +44,12 @@ class DependenciesPanel(
     mLibrariesListPanel.update(libraries)
   }
 
-  private fun setLeftPanel(height: Int) {
+  private fun setPanel(height: Int) {
     val scrollPanel = JBScrollPane(mLibrariesListPanel)
     scrollPanel.preferredSize = Dimension(0, height)
-    add(scrollPanel, gridConstraint(0, 0))
-  }
-
-  private fun setRightPanel(height: Int) {
-    val rightPanel = JPanel(GridBagLayout())
-    rightPanel.preferredSize = Dimension(0, height)
-    add(rightPanel, gridConstraint(1, 0))
-    rightPanel.border = JBUI.Borders.emptyLeft(UIUtil.DEFAULT_HGAP * 2)
-    rightPanel.apply {
-      add(mLibraryDescriptionPanel, gridConstraint(0, 0))
-      add(JBScrollPane(mSelectedLibrariesPanel).apply {
-        preferredSize = Dimension(0, (height * 0.6).toInt())
-      }, gridConstraint(0, 1))
-    }
+    add(scrollPanel)
+    add(JBScrollPane(mSelectedLibrariesPanel))
+    add(JBScrollPane(mLibraryDescriptionPanel))
   }
 
   // 观察被选中的列表

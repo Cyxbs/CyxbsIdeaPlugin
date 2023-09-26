@@ -4,8 +4,7 @@ import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
 import com.cyxbs.idea.module.creator.wizard.CyxbsNewProjectWizardStep
 import com.cyxbs.idea.module.creator.libraries.LibraryDataSource
 import com.cyxbs.idea.module.creator.modules.ModulesDataSource
-import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
-import com.cyxbs.idea.module.creator.wizard.group.GroupManager
+import com.cyxbs.idea.module.creator.wizard.dependencies.DependWizardStepManager
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.ide.wizard.*
@@ -35,7 +34,7 @@ class CyxbsModuleBuilder : AbstractNewProjectWizardBuilder() {
     wizardContext: WizardContext,
     modulesProvider: ModulesProvider
   ): Array<ModuleWizardStep> {
-    return GroupManager.createWizardSteps(wizardContext, modulesProvider)
+    return DependWizardStepManager.createWizardSteps(wizardContext, modulesProvider)
   }
 
   /**
@@ -47,7 +46,6 @@ class CyxbsModuleBuilder : AbstractNewProjectWizardBuilder() {
     ModulesDataSource.loadData(context.project)
     return RootNewProjectWizardStep(context)
       .chain(::CyxbsNewProjectWizardStep)
-      .chain(::FileBuilderWizardStep) // 创建文件的需要放在最后
   }
 
   override fun isAvailable(): Boolean {

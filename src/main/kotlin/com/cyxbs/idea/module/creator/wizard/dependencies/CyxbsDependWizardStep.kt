@@ -1,7 +1,6 @@
 package com.cyxbs.idea.module.creator.wizard.dependencies
 
 import com.cyxbs.idea.module.creator.wizard.dependencies.data.TreeNodeData
-import com.cyxbs.idea.module.creator.wizard.file.FileBuilderWizardStep
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.ide.wizard.withVisualPadding
@@ -11,14 +10,15 @@ import com.intellij.util.ui.components.BorderLayoutPanel
 import javax.swing.JComponent
 
 class CyxbsDependWizardStep(
-  private val context: WizardContext
+  private val context: WizardContext,
+  private val selected: (modules: List<TreeNodeData>, libraries: List<TreeNodeData>) -> Unit
 ) : ModuleWizardStep() {
 
-  private val mLibraries = mutableListOf<TreeNodeData>()
   private val mModules = mutableListOf<TreeNodeData>()
+  private val mLibraries = mutableListOf<TreeNodeData>()
 
-  private val mSelectedLibraries = mutableListOf<TreeNodeData>()
   private val mSelectedModules = mutableListOf<TreeNodeData>()
+  private val mSelectedLibraries = mutableListOf<TreeNodeData>()
 
   private val mTopLevelPanel = BorderLayoutPanel()
 
@@ -71,11 +71,11 @@ class CyxbsDependWizardStep(
     if (specificPanel != null) {
       mTopLevelPanel.removeAll()
       mTopLevelPanel.addToCenter(specificPanel)
+      mSelectedLibraries.clear()
+      mSelectedModules.clear()
     } else {
       mTopLevelPanel.removeAll()
       mTopLevelPanel.addToCenter(mContentPanel)
-      mSelectedLibraries.clear()
-      mSelectedModules.clear()
       mLibrariesPanel.update(mLibraries)
       mModulesPanel.update(mModules)
     }
@@ -87,16 +87,8 @@ class CyxbsDependWizardStep(
   }
 
   override fun updateDataModel() {
-    println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-      "updateDataModel")
-    FileBuilderWizardStep.Modules = mSelectedModules.map { data ->
-      val name = data.title.split("-").joinToString("") { ele ->
-        ele.replaceFirstChar { it.uppercaseChar() }
-      }
-      "depend$name()"
-    }
-    FileBuilderWizardStep.Libraries = mSelectedLibraries.map { data ->
-      "depend${data.title}()"
-    }
+    // 因为在 updateDataModel 后会重新触发 _init，然后选择的数据被情况
+    // 所以在这里对外面进行回调
+    selected.invoke(mSelectedModules, mSelectedLibraries)
   }
 }

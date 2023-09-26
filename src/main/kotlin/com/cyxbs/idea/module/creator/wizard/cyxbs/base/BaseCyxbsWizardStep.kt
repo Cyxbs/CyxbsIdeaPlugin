@@ -1,6 +1,10 @@
 package com.cyxbs.idea.module.creator.wizard.cyxbs.base
 
 import com.cyxbs.idea.module.creator.wizard.base.BaseCombineWizardStep
+import com.cyxbs.idea.module.creator.wizard.file.IAddModuleProperties
+import com.cyxbs.idea.module.creator.wizard.file.IAssetsBuilder
+import com.cyxbs.idea.module.creator.wizard.file.ModuleFileBuilderWizardStep
+import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.projectWizard.generators.AssetsNewProjectWizardStep
 import com.intellij.ide.starters.local.GeneratorAsset
 import com.intellij.ide.wizard.NewProjectWizardStep
@@ -10,6 +14,7 @@ import com.intellij.openapi.externalSystem.importing.ImportSpecBuilder
 import com.intellij.openapi.externalSystem.service.project.manage.ExternalProjectsManagerImpl
 import com.intellij.openapi.externalSystem.util.ExternalSystemUtil
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.ProjectManager
 import org.jetbrains.plugins.gradle.util.GradleConstants
 
 /**
@@ -18,36 +23,47 @@ import org.jetbrains.plugins.gradle.util.GradleConstants
  * @author 985892345
  * 2023/9/24 15:02
  */
-abstract class BaseCyxbsWizardStep(parentStep: NewProjectWizardStep) : BaseCombineWizardStep(parentStep) {
+abstract class BaseCyxbsWizardStep(
+  parentStep: NewProjectWizardStep
+) : BaseCombineWizardStep(parentStep), IAssetsBuilder, IAddModuleProperties {
+
+  private val mModuleFileBuilderWizardStep by lazy {
+    ModuleFileBuilderWizardStep(this, this)
+  }
 
   private val mAssetsNewProjectWizardStep by lazy {
     CyxbsAssetsNewProjectWizardStep(this)
   }
 
   override fun setupProject(project: Project) {
+    mAssetsNewProjectWizardStep.outputDirectory = project.basePath!!
     super.setupProject(project)
+    mModuleFileBuilderWizardStep.setupProject(project)
     mAssetsNewProjectWizardStep.setupProject(project)
   }
 
-  /**
-   * 添加文件或者文件夹
-   */
-  fun addAssets(vararg assets: GeneratorAsset) {
+  override val template: FileTemplateManager by lazy {
+    FileTemplateManager.getInstance(ProjectManager.getInstance().defaultProject)
+  }
+
+  override fun addTemplateProperties(vararg properties: Pair<String, Any>) {
+    mAssetsNewProjectWizardStep.addTemplateProperties(*properties)
+  }
+
+  override fun addAssets(vararg assets: GeneratorAsset) {
     mAssetsNewProjectWizardStep.addAssets(*assets)
   }
 
-  /**
-   * 设置模版文件中的字段属性
-   */
-  fun addTemplateProperties(properties: Map<String, Any>) {
+  override fun addTemplateProperties(properties: Map<String, Any>) {
     mAssetsNewProjectWizardStep.addTemplateProperties(properties)
   }
 
-  /**
-   * 打开某文件
-   */
-  fun addFilesToOpen(vararg relativeCanonicalPaths: String) {
+  override fun addFilesToOpen(vararg relativeCanonicalPaths: String) {
     mAssetsNewProjectWizardStep.addFilesToOpen(*relativeCanonicalPaths)
+  }
+
+  override fun addModuleProperties(vararg pair: Pair<String, String>) {
+    mModuleFileBuilderWizardStep.addModuleProperties(*pair)
   }
 
   // 用于生成模版文件的类

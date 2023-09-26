@@ -13,7 +13,7 @@ open class SingleModuleWizardStep(
         checkBox("开启单模块调试")
           .bindSelected(parent.singleModuleProperty)
           .enabled(parent.singleModuleEnabled)
-      }.bottomGap(BottomGap.SMALL)
+      }
     }
   }
 }

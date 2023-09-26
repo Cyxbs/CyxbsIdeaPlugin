@@ -2,7 +2,7 @@ package com.cyxbs.idea.module.creator.wizard.dependencies.data
 
 data class TreeNodeData(
   val title: String,
-  val description: String,
+  val description: List<String>,
   val checkableType: CheckableType,
   val treeNode: TreeNodeType,
 )

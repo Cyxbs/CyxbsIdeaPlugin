@@ -50,7 +50,7 @@ object ModulesDataSource {
     synchronized(mApplicationModules) {
       mApplicationModules.clear()
       visitCyxbsGroup(applicationsFile) {
-        val module = ApplicationModule(it.name, it)
+        val module = ApplicationModule(it.name, it, ModuleProperties.getDescription(it))
         mApplicationModules.add(module)
       }
     }
@@ -60,7 +60,7 @@ object ModulesDataSource {
     synchronized(mComponentModules) {
       mComponentModules.clear()
       visitCyxbsGroup(componentsFile) {
-        val module = ComponentModule(it.name, it)
+        val module = ComponentModule(it.name, it, ModuleProperties.getDescription(it))
         mComponentModules.add(module)
       }
     }
@@ -70,7 +70,7 @@ object ModulesDataSource {
     synchronized(mFunctionModules) {
       mFunctionModules.clear()
       visitCyxbsGroup(functionsFile) {
-        val module = FunctionModule(it.name, it)
+        val module = FunctionModule(it.name, it, ModuleProperties.getDescription(it))
         mFunctionModules.add(module)
       }
     }
@@ -80,7 +80,7 @@ object ModulesDataSource {
     synchronized(mPageModules) {
       mPageModules.clear()
       visitCyxbsGroup(pagesFile) {
-        val module = PageModule(it.name, it)
+        val module = PageModule(it.name, it, ModuleProperties.getDescription(it))
         mPageModules.add(module)
       }
     }
@@ -89,6 +89,7 @@ object ModulesDataSource {
   private fun visitCyxbsGroup(cyxbsGroupFile: File, visitor: (parent: File) -> Unit) {
     cyxbsGroupFile.listFiles { file ->
       file.resolve("build.gradle.kts").exists()
+          && ModuleProperties.getVisible(file)
     }?.forEach {
       visitor.invoke(it)
     }

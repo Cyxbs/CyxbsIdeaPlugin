@@ -1,4 +1,4 @@
-package ${PACKAGE_NAME}
+package ${SINGLE_MODULE_PACKAGE}
 
 import com.google.auto.service.AutoService
 import com.cyxbs.components.singlemodule.ISingleModuleEntry

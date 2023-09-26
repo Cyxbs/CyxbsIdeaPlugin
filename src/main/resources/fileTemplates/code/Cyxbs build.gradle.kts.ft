@@ -1,5 +1,5 @@
 plugins {
-#if($IS_SINGLE_MODULE)
+#if($BUILD_GRADLE_IS_SINGLE_MODULE)
   id("module-single")
 #else
   id("module-manager")
@@ -7,13 +7,13 @@ plugins {
 }
 
 dependModule {
-#foreach ($item in $MODULES)
+#foreach ($item in $BUILD_GRADLE_MODULES)
   $item
 #end
 }
 
 dependLibrary {
-#foreach ($item in $LIBRARIES)
+#foreach ($item in $BUILD_GRADLE_LIBRARIES)
   $item
 #end
 }

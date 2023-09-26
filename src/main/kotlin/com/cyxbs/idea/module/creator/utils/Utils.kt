@@ -1,5 +1,6 @@
 package com.cyxbs.idea.module.creator.utils
 
+import org.jetbrains.kotlin.lombok.utils.capitalize
 import java.awt.GridBagConstraints
 import java.io.File
 
@@ -21,5 +22,9 @@ internal fun gridConstraint(col: Int, row: Int, xWeight: Double = 1.0, yWeight: 
     weightx = xWeight
     weighty = yWeight
   }
+}
+
+internal fun String.capitalized(): String {
+  return replaceFirstChar { it.uppercase() }
 }
 
