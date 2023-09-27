@@ -1,9 +1,10 @@
-package com.cyxbs.idea.module.creator.wizard.cyxbs.base
+package com.cyxbs.idea.module.creator.wizard.base
 
-import com.cyxbs.idea.module.creator.wizard.base.BaseCombineWizardStep
-import com.cyxbs.idea.module.creator.wizard.file.IAddModuleProperties
-import com.cyxbs.idea.module.creator.wizard.file.IAssetsBuilder
-import com.cyxbs.idea.module.creator.wizard.file.ModuleFileBuilderWizardStep
+import com.cyxbs.idea.module.creator.modules.properties.IAddModuleProperties
+import com.cyxbs.idea.module.creator.wizard.file.IApiModuleFileBuilder
+import com.cyxbs.idea.module.creator.wizard.file.ICommonModuleFileBuilder
+import com.cyxbs.idea.module.creator.wizard.file.impl.ApiModuleFileBuilderWizardStep
+import com.cyxbs.idea.module.creator.wizard.file.impl.CommonModuleFileBuilderWizardStep
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.projectWizard.generators.AssetsNewProjectWizardStep
 import com.intellij.ide.starters.local.GeneratorAsset
@@ -25,10 +26,14 @@ import org.jetbrains.plugins.gradle.util.GradleConstants
  */
 abstract class BaseCyxbsWizardStep(
   parentStep: NewProjectWizardStep
-) : BaseCombineWizardStep(parentStep), IAssetsBuilder, IAddModuleProperties {
+) : BaseCombineWizardStep(parentStep), IApiModuleFileBuilder, ICommonModuleFileBuilder, IAddModuleProperties {
 
-  private val mModuleFileBuilderWizardStep by lazy {
-    ModuleFileBuilderWizardStep(this, this)
+  private val mApiModuleFileBuilder by lazy {
+    ApiModuleFileBuilderWizardStep(this, this)
+  }
+
+  private val mCommonModuleFileBuilder by lazy {
+    CommonModuleFileBuilderWizardStep(this, this)
   }
 
   private val mAssetsNewProjectWizardStep by lazy {
@@ -38,7 +43,8 @@ abstract class BaseCyxbsWizardStep(
   override fun setupProject(project: Project) {
     mAssetsNewProjectWizardStep.outputDirectory = project.basePath!!
     super.setupProject(project)
-    mModuleFileBuilderWizardStep.setupProject(project)
+    mApiModuleFileBuilder.setupProject(project)
+    mCommonModuleFileBuilder.setupProject(project)
     mAssetsNewProjectWizardStep.setupProject(project)
   }
 
@@ -63,11 +69,15 @@ abstract class BaseCyxbsWizardStep(
   }
 
   override fun addModuleProperties(vararg pair: Pair<String, String>) {
-    mModuleFileBuilderWizardStep.addModuleProperties(*pair)
+    mApiModuleFileBuilder.addModuleProperties(*pair)
+    mCommonModuleFileBuilder.addModuleProperties(*pair)
   }
 
   // 用于生成模版文件的类
-  private inner class CyxbsAssetsNewProjectWizardStep(parent: NewProjectWizardStep) : AssetsNewProjectWizardStep(parent) {
+  private inner class CyxbsAssetsNewProjectWizardStep(
+    parent: NewProjectWizardStep
+  ) : AssetsNewProjectWizardStep(parent) {
+
     override fun setupAssets(project: Project) {
       syncGradle(project)
     }

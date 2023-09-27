@@ -5,6 +5,7 @@ import com.cyxbs.idea.module.creator.libraries.data.CyxbsLibrary
 import com.cyxbs.idea.module.creator.modules.ModulesDataSource
 import com.cyxbs.idea.module.creator.modules.data.*
 import com.cyxbs.idea.module.creator.utils.capitalized
+import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
 import com.cyxbs.idea.module.creator.wizard.cyxbs.ICyxbsParentWizardStep
 import com.cyxbs.idea.module.creator.wizard.cyxbs.applications.ApplicationsWizardStep
 import com.cyxbs.idea.module.creator.wizard.cyxbs.components.ComponentsWizardStep
@@ -55,6 +56,7 @@ object DependWizardStepManager {
     wizardContext: WizardContext,
     modulesProvider: ModulesProvider
   ): Array<ModuleWizardStep> {
+    if (!checkCyxbsMobileLite(wizardContext.project?.basePath)) return emptyArray()
     val wizardStep = CyxbsDependWizardStep(wizardContext) { modules, libraries ->
       // 不能使用源集合
       mSelectedModules = modules.toList()
@@ -116,8 +118,6 @@ object DependWizardStepManager {
    */
   fun getDependModules(): List<String> {
     return mSelectedModules.map { data ->
-      println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-        "getDependModules   data = $data")
       val name = data.title.split("-").joinToString("") { it.capitalized() }
       "depend$name()"
     }
@@ -128,8 +128,6 @@ object DependWizardStepManager {
    */
   fun getDependLibraries(): List<String> {
     return mSelectedLibraries.map { data ->
-      println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-        "getDependLibraries   data = $data")
       "depend${data.title}()"
     }
   }

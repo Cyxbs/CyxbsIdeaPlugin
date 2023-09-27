@@ -23,10 +23,14 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.modules.gradle.java</depends>
+    <depends>org.jetbrains.android</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
         <moduleBuilder id="CyxbsModuleBuilder" builderClass="com.cyxbs.idea.module.creator.CyxbsModuleBuilder" />
+    </extensions>
+    <extensions defaultExtensionNs="com.android">
+        <moduleDescriptionProvider implementation="com.cyxbs.idea.module.creator.AndroidCyxbsModuleBuilder"/>
     </extensions>
 </idea-plugin>

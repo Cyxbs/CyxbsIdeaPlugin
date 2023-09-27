@@ -35,16 +35,6 @@ class CyxbsNewProjectWizardStep(
   private var newProjectName by newProjectNameProperty
 
   override fun setupUI(builder: Panel) {
-    if (!checkCyxbsMobileLite(context.project?.basePath)) {
-      builder.row {
-        cell(JPanel(GridBagLayout()).apply {
-          add(JBLabel("检测到不是掌上重邮项目，所以该插件不能使用"), GridBagConstraints().apply {
-            fill = GridBagConstraints.CENTER
-          })
-        }).horizontalAlign(HorizontalAlign.FILL)
-      }
-      return
-    }
     with(builder) {
       row("模块名字:") {
         val commentProperty = stepProperty.joinCanonicalPath(newProjectNameProperty)
@@ -60,8 +50,6 @@ class CyxbsNewProjectWizardStep(
           .apply { commentProperty.afterChange { comment?.text = it } }
       }
       onApply {
-        println(".(${Exception().stackTrace[0].run { "$fileName:$lineNumber" }}) -> " +
-          "onApply")
         // 点击 next 到下一页时回调
         DependWizardStepManager.updateDependWizardStep(step)
       }

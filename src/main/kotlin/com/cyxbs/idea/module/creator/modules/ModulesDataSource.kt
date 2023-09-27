@@ -1,6 +1,9 @@
 package com.cyxbs.idea.module.creator.modules
 
 import com.cyxbs.idea.module.creator.modules.data.*
+import com.cyxbs.idea.module.creator.modules.properties.ModuleProperties
+import com.cyxbs.idea.module.creator.modules.properties.getDescription
+import com.cyxbs.idea.module.creator.modules.properties.getVisible
 import com.cyxbs.idea.module.creator.utils.checkCyxbsMobileLite
 import com.intellij.openapi.project.Project
 import org.jetbrains.concurrency.runAsync

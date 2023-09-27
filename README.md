@@ -1,10 +1,9 @@
 # CyxbsIdeaPlugin
 [掌上重邮极速版](https://github.com/Cyxbs/CyxbsMobileLite_Android) 配套的 idea 插件
 
-**注: 目前该项目处于开发阶段**
-
 ## 功能如下
-- 模块创建
+- 创建模块
+  - 支持添加依赖
 
 ## 如何参与
 如果你想参与该项目，你需要了解以下内容:

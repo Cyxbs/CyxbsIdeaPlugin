@@ -1,7 +1,7 @@
 package com.cyxbs.idea.module.creator.modules.data
 
-import com.cyxbs.idea.module.creator.modules.ModuleProperties
-import com.cyxbs.idea.module.creator.modules.getDescription
+import com.cyxbs.idea.module.creator.modules.properties.ModuleProperties
+import com.cyxbs.idea.module.creator.modules.properties.getDescription
 import java.io.File
 
 /**

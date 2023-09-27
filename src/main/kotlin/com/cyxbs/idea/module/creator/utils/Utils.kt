@@ -1,6 +1,5 @@
 package com.cyxbs.idea.module.creator.utils
 
-import org.jetbrains.kotlin.lombok.utils.capitalize
 import java.awt.GridBagConstraints
 import java.io.File
 

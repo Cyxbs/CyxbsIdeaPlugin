@@ -1,4 +1,4 @@
-package com.cyxbs.idea.module.creator.wizard.file
+package com.cyxbs.idea.module.creator.modules.properties
 
 /**
  * .

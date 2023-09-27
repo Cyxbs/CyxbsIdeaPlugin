@@ -1,4 +1,4 @@
-package com.cyxbs.idea.module.creator.modules
+package com.cyxbs.idea.module.creator.modules.properties
 
 import java.io.File
 import java.util.*

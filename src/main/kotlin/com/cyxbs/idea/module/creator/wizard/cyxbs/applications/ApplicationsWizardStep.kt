@@ -2,7 +2,7 @@ package com.cyxbs.idea.module.creator.wizard.cyxbs.applications
 
 import com.cyxbs.idea.module.creator.modules.data.CyxbsGroup
 import com.cyxbs.idea.module.creator.wizard.cyxbs.ICyxbsParentWizardStep
-import com.cyxbs.idea.module.creator.wizard.cyxbs.base.BaseCyxbsWizardStep
+import com.cyxbs.idea.module.creator.wizard.base.BaseCyxbsWizardStep
 import com.cyxbs.idea.module.creator.wizard.extensions.description.DescriptionWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
 

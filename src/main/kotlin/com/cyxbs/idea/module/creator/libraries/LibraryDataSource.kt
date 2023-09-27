@@ -67,7 +67,7 @@ object LibraryDataSource {
   }
 
   private fun readDescription(lines: List<String>, group: String): List<String> {
-    val objectRegex = Regex(" *object +$group *\\{ *")
+    val objectRegex = Regex("object +$group *\\{ *")
     lines.forEachIndexed { index, line ->
       if (line.matches(objectRegex)) {
         return readInfo(lines, 0, index)
@@ -79,7 +79,7 @@ object LibraryDataSource {
   private fun readDepend(lines: List<String>, group: String): List<DependItem> {
     var leftCount = 0
     var objectEndIndex = 0
-    val objectRegex = Regex(" *object +$group *\\{ *")
+    val objectRegex = Regex("object +$group *\\{ *")
     for (index in lines.indices) {
       val line = lines[index]
       if (line.matches(objectRegex)) {
@@ -97,20 +97,23 @@ object LibraryDataSource {
         }
       }
     }
-    return readDepend(lines, objectEndIndex, lines.size)
+    return readDepend(lines, objectEndIndex + 1, lines.size)
   }
 
   private fun readDepend(lines: List<String>, start: Int, end: Int): List<DependItem> {
     if (start > end) return emptyList()
     val result = mutableListOf<DependItem>()
     var lastFunIndex = start
-    val funRegex = Regex(" *fun +DependLibraryScope\\.depend[a-zA-Z0-9]+\\(.+\\{ *")
+    val funRegex = Regex("fun +DependLibraryScope\\.depend[a-zA-Z0-9]+\\(.+\\{ *")
+    val endRegex = Regex("} *")
     for (index in start until end) {
       val line = lines[index]
       if (line.matches(funRegex)) {
         val name =  line.substringAfter("depend").substringBefore("(")
         val info = readInfo(lines, lastFunIndex + 1, index - 1)
         result.add(DependItem(name, info))
+      }
+      if (line.matches(endRegex)) {
         lastFunIndex = index
       }
     }

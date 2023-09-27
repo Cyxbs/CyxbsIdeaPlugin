@@ -1,6 +1,6 @@
 package com.cyxbs.idea.module.creator.wizard.extensions.description
 
-import com.cyxbs.idea.module.creator.wizard.file.IAddModuleProperties
+import com.cyxbs.idea.module.creator.modules.properties.IAddModuleProperties
 import com.intellij.ide.wizard.AbstractNewProjectWizardStep
 import com.intellij.ide.wizard.NewProjectWizardStep
 import com.intellij.openapi.project.Project

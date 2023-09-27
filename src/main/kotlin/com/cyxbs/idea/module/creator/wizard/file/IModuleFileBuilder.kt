@@ -8,21 +8,13 @@ import com.intellij.ide.starters.local.GeneratorAsset
  * .
  *
  * @author 985892345
- * 2023/9/26 17:16
+ * 2023/9/27 13:04
  */
-interface IAssetsBuilder {
+interface IModuleFileBuilder {
 
   val group: CyxbsGroup
 
   val newProjectName: String
-
-  val isNeedApiModule: Boolean
-
-  val isNeedSingleModule: Boolean
-
-  val dependModules: List<String>
-
-  val dependLibraries: List<String>
 
   /**
    * 获取文件模版的管理类

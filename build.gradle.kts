@@ -2,10 +2,17 @@ plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.8.22"
   id("org.jetbrains.intellij") version "1.14.1"
+  id("com.github.gmazzo.buildconfig") version "4.0.4"
 }
 
 group = "com.cyxbs.idea"
-version = "1.0-SNAPSHOT"
+version = "1.0"
+
+buildConfig {
+  packageName("com.cyxbs.idea")
+  buildConfigField("String", "VERSION", "\"${project.group}\"")
+  buildConfigField("String", "GROUP", "\"${project.version}\"")
+}
 
 repositories {
   mavenCentral()
