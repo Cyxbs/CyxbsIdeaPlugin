@@ -22,3 +22,9 @@
 ## 如何调试
 - 执行 gradle 中 intellij 分组的 runIde
 - 打开该项目目录下的 [CyxbsMobileLite_Android](CyxbsMobileLite_Android) (这是源项目的模版，方便调试)
+
+## 如何使用
+- 执行 gradle 中 intellij 分组的 buildPlugin
+- 然后把 build 下面 libs 中生成的 `CyxbsIdeaPlugin-x.x.jar` 放在掌上重邮极速版项目目录下
+- 插件中已做旧版强制升级处理
+- 在 设置 - plugins 里面点击齿轮，选择 `Install Plugin from Disk` 安装目录下的 jar 即可完成升级操作

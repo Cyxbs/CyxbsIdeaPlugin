@@ -14,7 +14,6 @@ rootProject.name = "CyxbsMobileLite_Android"
 
 // 需要删除模块时写这里面，将不再进行 include，直接写模块名即可
 val excludeList: List<String> = listOf(
-  "aaa"
 )
 
 rootDir.listFiles { file ->

@@ -24,14 +24,6 @@ class LibraryDescriptionPanel : ScrollablePanel(VerticalLayout(DEFAULT_VGAP)) {
   private val descriptionText: JTextArea = JTextArea()
   private val linksPanel: JPanel = JPanel(WrappedFlowLayout())
 
-  private val emptyState: StatusText = object : StatusText(this) {
-    override fun isStatusVisible(): Boolean {
-      return UIUtil.uiChildren(this@LibraryDescriptionPanel)
-        .filter { obj: Component -> obj.isVisible }
-        .isEmpty
-    }
-  }
-
   init {
     this.border = JBUI.Borders.empty(DEFAULT_VGAP)
 
@@ -45,8 +37,6 @@ class LibraryDescriptionPanel : ScrollablePanel(VerticalLayout(DEFAULT_VGAP)) {
 
     linksPanel.border = JBUI.Borders.emptyTop(UIUtil.DEFAULT_VGAP * 2)
     add(linksPanel)
-
-    emptyState.text = JavaStartersBundle.message("hint.no.library.selected")
 
     showEmptyState()
   }
@@ -71,11 +61,6 @@ class LibraryDescriptionPanel : ScrollablePanel(VerticalLayout(DEFAULT_VGAP)) {
     }
     revalidate()
     repaint()
-  }
-
-  override fun paintComponent(g: Graphics?) {
-    super.paintComponent(g)
-    emptyState.paint(this, g)
   }
 
   override fun getComponentGraphics(graphics: Graphics?): Graphics {

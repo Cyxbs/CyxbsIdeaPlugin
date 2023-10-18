@@ -1,3 +1,0 @@
-#foreach ($item in $MODULE_PROPERTIES)
-  $item
-#end

@@ -10,8 +10,8 @@ data class TreeNodeData(
 sealed interface CheckableType {
   object Catalog : CheckableType
   data class Checkbox(
-    val isDefault: Boolean = false,
-    val isEnabled: Boolean = true,
+    var isDefault: Boolean = false,
+    var isEnabled: Boolean = true,
   ) : CheckableType
 }
 

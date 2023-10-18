@@ -25,8 +25,7 @@ intellij {
   type.set("IC") // Target IDE Platform
 
   plugins.set(listOf(
-    "java",
-    "android", "javaFX", "maven", // 不必要项，为了查看官方写的示例，后续会删除
+    "android",
   ))
 }
 

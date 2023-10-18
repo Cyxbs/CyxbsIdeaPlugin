@@ -14,10 +14,10 @@ class DependenciesPanel(
   private val selectedCallback: (List<TreeNodeData>) -> Unit
 ) : JPanel(GridLayout(1, 3)) {
 
-  // 右上方的依赖描述
+  // 右边的依赖描述
   private val mLibraryDescriptionPanel = LibraryDescriptionPanel()
 
-  // 右下方的已选列表
+  // 中间的已选列表
   private val mSelectedLibrariesPanel = SelectedLibrariesPanel { libraryInfo ->
     // 不能直接从 selectedLibraryIds 中删除，因为可能这个库是被另一个库包含的 (设置在 CyxbsLibrary.includesLibraries 中)
     mLibrariesListPanel.walkCheckedTree(mLibrariesListPanel.getLibrariesRoot()) {
@@ -35,8 +35,7 @@ class DependenciesPanel(
   }
 
   init {
-    val height = 260
-    setPanel(height)
+    createPanel()
     observeLibrariesSelected()
   }
 
@@ -44,10 +43,11 @@ class DependenciesPanel(
     mLibrariesListPanel.update(libraries)
   }
 
-  private fun setPanel(height: Int) {
-    val scrollPanel = JBScrollPane(mLibrariesListPanel)
-    scrollPanel.preferredSize = Dimension(0, height)
-    add(scrollPanel)
+  private fun createPanel() {
+    val height = 200
+    add(JBScrollPane(mLibrariesListPanel).apply {
+      preferredSize = Dimension(0, height)
+    })
     add(JBScrollPane(mSelectedLibrariesPanel))
     add(JBScrollPane(mLibraryDescriptionPanel))
   }

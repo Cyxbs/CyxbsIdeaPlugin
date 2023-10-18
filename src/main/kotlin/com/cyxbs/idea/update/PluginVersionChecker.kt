@@ -13,26 +13,13 @@ import java.io.File
  */
 object PluginVersionChecker {
 
-  fun check(project: Project): ((NewProjectWizardStep) -> NewProjectWizardStep)? {
-    return when (checkVersion(project)) {
-      true -> null
-      false -> {
-        { UpdateNewWizardStep(it, "项目目录下发现更新的插件 jar 包，请安装更新后再使用") }
-      }
-      null -> {
-        // 强制要求使用者放置 jar 包，防止有人把更新包删了用来逃避更新
-        { UpdateNewWizardStep(it, "未在项目目录下找到插件 jar 包，目录下必须存在插件 jar 包") }
-      }
-    }
-  }
-
   /**
    * @return true: 不用更新, false: 需要更新, null: 未在项目目录下找到 jar 包
    */
-  private fun checkVersion(project: Project): Boolean? {
+  fun check(project: Project): Boolean? {
     val oldVersion = BuildConfig.VERSION
     val newVersion = getNewVersion(project) ?: return null
-    return compareVersion(oldVersion, newVersion) > 0
+    return compareVersion(oldVersion, newVersion) >= 0
   }
 
   private fun getNewVersion(project: Project): String? {
