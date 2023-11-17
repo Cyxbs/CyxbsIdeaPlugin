@@ -3,7 +3,9 @@
 
 ## 功能如下
 - 创建模块
-  - 支持添加依赖
+  - 支持创建子模块
+  - 支持添加依赖的模块
+  - 支持添加第三方依赖
 
 ## 如何参与
 如果你想参与该项目，你需要了解以下内容:
@@ -24,7 +26,7 @@
 - 打开该项目目录下的 [CyxbsMobileLite_Android](CyxbsMobileLite_Android) (这是源项目的模版，方便调试)
 
 ## 如何使用
-- 执行 gradle 中 intellij 分组的 buildPlugin
+- 执行 gradle 中 intellij 分组的 buildPlugin (发布新功能时记得在 build.gradle.kts 中设置版本号)
 - 然后把 build 下面 libs 中生成的 `CyxbsIdeaPlugin-x.x.jar` 放在掌上重邮极速版项目目录下
 - 插件中已做旧版强制升级处理
 - 在 设置 - plugins 里面点击齿轮，选择 `Install Plugin from Disk` 安装目录下的 jar 即可完成升级操作

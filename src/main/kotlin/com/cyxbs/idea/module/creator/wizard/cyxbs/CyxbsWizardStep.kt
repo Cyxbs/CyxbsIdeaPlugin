@@ -1,25 +1,20 @@
-package com.cyxbs.idea.module.creator.wizard.cyxbs.others
+package com.cyxbs.idea.module.creator.wizard.cyxbs
 
 import com.android.tools.idea.npw.model.ProjectSyncInvoker
 import com.android.tools.idea.wizard.model.ModelWizardStep
 import com.cyxbs.idea.module.creator.wizard.base.BaseWizardStep
 import com.cyxbs.idea.module.modules.data.CyxbsGroup
-import com.cyxbs.idea.module.utils.toIdea
 import com.intellij.openapi.project.Project
-import com.intellij.ui.dsl.builder.BottomGap
-import com.intellij.ui.dsl.builder.Panel
-import com.intellij.ui.dsl.builder.bindSelected
-import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.layout.selected
+import com.intellij.ui.dsl.builder.*
 import javax.swing.JComponent
 
 /**
- * .
+ * 一级页面
  *
  * @author 985892345
  * 2023/10/6 20:26
  */
-open class OthersWizardStep(
+open class CyxbsWizardStep(
   project: Project,
   moduleParent: String,
   projectSyncInvoker: ProjectSyncInvoker
@@ -49,7 +44,12 @@ open class OthersWizardStep(
             component.isSelected = model.isNeedApiModule.get()
           }
         }
-    }.bottomGap(BottomGap.SMALL)
+    }.bottomGap(BottomGap.SMALL).apply {
+      model.moduleName.addListener {
+        // 创建子模块时不显示
+        visible(!model.moduleName.get().contains("/"))
+      }
+    }
   }
 
   private fun Panel.createSingleModuleCheckbox() {
@@ -61,7 +61,12 @@ open class OthersWizardStep(
             component.isSelected = model.isSingleModule.get()
           }
         }
-    }.bottomGap(BottomGap.SMALL)
+    }.bottomGap(BottomGap.SMALL).apply {
+      model.moduleName.addListener {
+        // 创建子模块时不显示
+        visible(!model.moduleName.get().contains("/"))
+      }
+    }
   }
 
   override fun createMainPanel(): JComponent {

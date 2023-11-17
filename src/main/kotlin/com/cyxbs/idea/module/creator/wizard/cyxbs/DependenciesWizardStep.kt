@@ -1,4 +1,4 @@
-package com.cyxbs.idea.module.creator.wizard.cyxbs.others
+package com.cyxbs.idea.module.creator.wizard.cyxbs
 
 import com.android.tools.idea.wizard.model.ModelWizardStep
 import com.cyxbs.idea.module.creator.wizard.dependencies.DependenciesPanel
@@ -14,12 +14,15 @@ import com.cyxbs.idea.module.modules.properties.CyxbsProperties
 import com.cyxbs.idea.module.utils.capitalized
 import com.intellij.ui.IdeBorderFactory
 import com.intellij.util.ui.JBInsets
+import org.jetbrains.kotlin.idea.gradleTooling.get
 import java.awt.GridLayout
+import java.io.File
 import javax.swing.JComponent
 import javax.swing.JPanel
+import kotlin.reflect.KClass
 
 /**
- * .
+ * 二级页面
  *
  * @author 985892345
  * 2023/10/6 20:30
@@ -36,6 +39,7 @@ class DependenciesWizardStep(
     }
   }
 
+  // 选择模块面板
   private val mModulesPanel by lazy {
     DependenciesPanel {
       model.dependModules.setNullableValue(
@@ -47,6 +51,7 @@ class DependenciesWizardStep(
     }
   }
 
+  // 选择依赖面板
   private val mLibrariesPanel by lazy {
     DependenciesPanel {
       model.dependLibraries.setNullableValue(
@@ -75,40 +80,54 @@ class DependenciesWizardStep(
       }
 
       CyxbsGroup.Components -> {
-        mModulesPanel.update(listOf(ModulesDataSource.copyComponentModules().toTreeNodeData(isSingleModule)))
-        mLibrariesPanel.update(LibrariesDataSource.copyCyxbsLibraries().toTreeNodeData(isSingleModule))
+        mModulesPanel.update(
+          listOf(
+            ModulesDataSource.copyComponentModules()
+              .toTreeNodeData(ComponentModule::class, isSingleModule)
+          )
+        )
+        mLibrariesPanel.update(
+          LibrariesDataSource.copyCyxbsLibraries()
+            .toTreeNodeData(isSingleModule)
+        )
       }
 
       CyxbsGroup.Functions -> {
         mModulesPanel.update(ModulesDataSource.let { source ->
           listOf(
-            source.copyComponentModules().toTreeNodeData(isSingleModule).configDefault(
-              CyxbsProperties.functionsDefaultModules
-            ),
-            source.copyFunctionModules().toTreeNodeData(isSingleModule).configDefault(
-              CyxbsProperties.functionsDefaultModules
-            ),
+            source.copyComponentModules()
+              .toTreeNodeData(ComponentModule::class, isSingleModule)
+              .apply { configDefault(CyxbsProperties.functionsDefaultModules) },
+            source.copyFunctionModules()
+              .toTreeNodeData(FunctionModule::class, isSingleModule)
+              .apply { configDefault(CyxbsProperties.functionsDefaultModules) },
           )
         })
-        mLibrariesPanel.update(LibrariesDataSource.copyCyxbsLibraries().toTreeNodeData(isSingleModule))
+        mLibrariesPanel.update(
+          LibrariesDataSource.copyCyxbsLibraries()
+            .toTreeNodeData(isSingleModule)
+            .onEach { it.configDefault(CyxbsProperties.functionsDefaultLibraries) }
+        )
       }
 
       CyxbsGroup.Pages -> {
         mModulesPanel.update(ModulesDataSource.let { source ->
           listOf(
-            source.copyComponentModules().toTreeNodeData(isSingleModule).configDefault(
-              CyxbsProperties.pagesDefaultModules
-            ),
-            source.copyFunctionModules().toTreeNodeData(isSingleModule).configDefault(
-              CyxbsProperties.pagesDefaultModules
-            ),
-            source.copyPageModules().toTreeNodeData(isSingleModule).configDefault(
-              CyxbsProperties.pagesDefaultModules
-            ),
+            source.copyComponentModules()
+              .toTreeNodeData(ComponentModule::class, isSingleModule)
+              .apply { configDefault(CyxbsProperties.pagesDefaultModules) },
+            source.copyFunctionModules()
+              .toTreeNodeData(FunctionModule::class, isSingleModule)
+              .apply { configDefault(CyxbsProperties.pagesDefaultModules) },
+            source.copyPageModules()
+              .toTreeNodeData(PageModule::class, isSingleModule)
+              .apply { configDefault(CyxbsProperties.pagesDefaultModules) },
           )
         })
         mLibrariesPanel.update(
-          LibrariesDataSource.copyCyxbsLibraries().toTreeNodeData(isSingleModule)
+          LibrariesDataSource.copyCyxbsLibraries()
+            .toTreeNodeData(isSingleModule)
+            .onEach { it.configDefault(CyxbsProperties.pagesDefaultLibraries) }
         )
       }
     }
@@ -132,17 +151,38 @@ class DependenciesWizardStep(
   /**
    * 转换模块数据为树形列表数据
    */
-  private inline fun <reified T : CommonModule> List<T>.toTreeNodeData(isSingleModule: Boolean): TreeNodeData {
+  private fun <T : CommonModule> List<T>.toTreeNodeData(
+    moduleClass: KClass<T>,
+    isSingleModule: Boolean
+  ): TreeNodeData {
+    fun getCheckbox(module: T): CheckableType.Checkbox = CheckableType.Checkbox(
+      isDefault = isSingleModule && CyxbsProperties.singleModuleDefaultModules.any { module.name.contains(it) }
+    )
     val childrenNode = TreeNodeType.ParentNode(
-      map {
-        if (it.api != null) it.api!! else it
-      }.map { module ->
-        TreeNodeData(module.name, module.description, CheckableType.Checkbox(
-          isDefault = isSingleModule && CyxbsProperties.singleModuleDefaultModules.any { module.name.contains(it) }
-        ), TreeNodeType.LeafNode)
+      map { module ->
+        val api = module.api
+        val children = module.children
+        if (api == null && children.isEmpty()) {
+          // 叶节点，当前父模块
+          TreeNodeData(module.name, module.description, getCheckbox(module), TreeNodeType.LeafNode)
+        } else if (api != null && children.isEmpty()) {
+          // 叶节点，但只显示 api 模块 (拥有 api 模块的不显示父模块)
+          TreeNodeData(api.name, api.description, getCheckbox(module), TreeNodeType.LeafNode)
+        } else {
+          // 以父模块作为目录，所有子模块作为其下的叶节点
+          val moduleList = mutableListOf<CyxbsModule>()
+          if (module.file.resolve("build.gradle.kts").exists()) moduleList.add(module)
+          if (api != null) moduleList.add(api)
+          moduleList.addAll(children)
+          TreeNodeData(module.name, module.description, CheckableType.Catalog,
+            TreeNodeType.ParentNode(
+              moduleList.map { TreeNodeData(it.name, it.description, getCheckbox(module), TreeNodeType.LeafNode) }
+            )
+          )
+        }
       }
     )
-    return when (T::class) {
+    return when (moduleClass) {
       ApplicationModule::class -> TreeNodeData(
         CyxbsGroup.Applications.groupName, listOf(
           "壳工程",
@@ -178,15 +218,16 @@ class DependenciesWizardStep(
         ), CheckableType.Catalog, childrenNode
       )
 
-      else -> error("未知类型: ${T::class.qualifiedName}")
+      else -> error("未知类型: ${moduleClass.qualifiedName}")
     }
   }
 
   /**
    * 配置 [CheckableType.Checkbox.isDefault]
    * @param keywords 关键词集合，由 [TreeNodeData.title] 进行匹配
+   *
    */
-  private fun TreeNodeData.configDefault(keywords: List<String>): TreeNodeData {
+  private fun TreeNodeData.configDefault(keywords: List<String>) {
     fun config(data: TreeNodeData) {
       when (data.checkableType) {
         CheckableType.Catalog -> {
@@ -209,6 +250,5 @@ class DependenciesWizardStep(
       }
     }
     config(this)
-    return this
   }
 }

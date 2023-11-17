@@ -52,7 +52,7 @@ class DependenciesPanel(
     add(JBScrollPane(mLibraryDescriptionPanel))
   }
 
-  // 观察被选中的列表
+  // 观察左边的依赖列表中被选中的列表
   private fun observeLibrariesSelected() {
     mLibrariesListPanel.selectionModel.addTreeSelectionListener { event ->
       if (event.isAddedPath) {

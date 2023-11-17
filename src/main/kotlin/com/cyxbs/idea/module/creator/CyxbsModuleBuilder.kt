@@ -4,7 +4,7 @@ import com.android.tools.idea.npw.model.ProjectSyncInvoker
 import com.android.tools.idea.npw.module.ModuleDescriptionProvider
 import com.android.tools.idea.npw.module.ModuleGalleryEntry
 import com.android.tools.idea.wizard.model.SkippableWizardStep
-import com.cyxbs.idea.module.creator.wizard.cyxbs.others.OthersWizardStep
+import com.cyxbs.idea.module.creator.wizard.cyxbs.CyxbsWizardStep
 import com.cyxbs.idea.module.libraries.LibrariesDataSource
 import com.cyxbs.idea.module.modules.properties.CyxbsProperties
 import com.cyxbs.idea.module.modules.ModulesDataSource
@@ -54,7 +54,7 @@ class CyxbsModuleBuilder : ModuleDescriptionProvider {
     ): SkippableWizardStep<*> {
       val update = PluginVersionChecker.check(project)
       return when (update) {
-        true -> OthersWizardStep(project, moduleParent, projectSyncInvoker)
+        true -> CyxbsWizardStep(project, moduleParent, projectSyncInvoker)
         false -> TextWizardStep("项目目录下发现更新的插件 jar 包，请安装更新后再使用")
         // 强制要求使用者放置 jar 包，防止有人把更新包删了用来逃避更新
         null -> TextWizardStep("未在项目目录下找到插件 jar 包，目录下必须存在插件 jar 包")

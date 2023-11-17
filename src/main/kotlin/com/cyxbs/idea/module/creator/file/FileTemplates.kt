@@ -60,15 +60,22 @@ fun ftSingleModuleEntry(
   return """
     package $packageName
 
+    import android.content.Context
     import com.cyxbs.components.singlemodule.ISingleModuleEntry
     import com.g985892345.provider.annotation.SingleImplProvider
 
     $header
-    @SingleImplProvider(ISingleModuleEntry::class)
+    @SingleImplProvider
     object ${moduleName.capitalized()}SingleModuleEntry : ISingleModuleEntry {
-      override fun getPage(): ISingleModuleEntry.Page {
-        TODO("返回一个启动 Activity 的 Intent 或者 Fragment")
+      override fun getPage(context: Context): ISingleModuleEntry.Page {
+        throw NotImplementedError()
       }
     }
   """.trimIndent()
 }
+
+fun ftResources(): String = """
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+</resources>
+""".trimIndent()

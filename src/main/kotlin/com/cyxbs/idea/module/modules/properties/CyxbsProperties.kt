@@ -5,7 +5,7 @@ import java.io.File
 import java.util.Properties
 
 /**
- * .
+ * 支持读取创建模块需要的属性
  *
  * @author 985892345
  * 2023/10/15 20:12
@@ -14,7 +14,8 @@ object CyxbsProperties {
 
   const val FILE_NAME = "ideaPlugin.properties"
 
-  val properties = Properties()
+  // 不推荐向外暴露，应该提供单独的方法获取属性
+  private val properties = Properties()
 
   fun init(project: Project) {
     val basePath = project.basePath ?: return

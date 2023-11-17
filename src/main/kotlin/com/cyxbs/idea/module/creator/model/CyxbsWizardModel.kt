@@ -11,8 +11,8 @@ import com.android.tools.idea.observable.core.StringValueProperty
 import com.android.tools.idea.wizard.template.ModuleTemplateData
 import com.android.tools.idea.wizard.template.Recipe
 import com.android.tools.idea.wizard.template.TemplateData
-import com.cyxbs.idea.module.creator.file.ApiModuleFileBuilder
-import com.cyxbs.idea.module.creator.file.CommonModuleFileBuilder
+import com.cyxbs.idea.module.creator.file.ChildModuleFileBuilder
+import com.cyxbs.idea.module.creator.file.ParentModuleFileBuilder
 import com.cyxbs.idea.module.creator.wizard.base.BaseModuleModel
 import com.cyxbs.idea.module.modules.data.CyxbsGroup
 import com.intellij.openapi.project.Project
@@ -39,14 +39,22 @@ class CyxbsWizardModel(
   val dependLibraries: OptionalProperty<List<String>?> = OptionalValueProperty()
   val description: StringProperty = StringValueProperty()
 
+  // 这里点击最后 Finish 的回调，在这个地方创建模版文件
   override val renderer: MultiTemplateRenderer.TemplateRenderer = object : ModuleTemplateRenderer() {
     override val recipe: Recipe get() = { td: TemplateData ->
       td as ModuleTemplateData
-      CommonModuleFileBuilder.generate(td, this, moduleName.get(),
-        cyxbsGroup.value, isSingleModule.get(), dependModules.valueOrNull, dependLibraries.valueOrNull,
-        description.get())
-      if (isNeedApiModule.get()) {
-        ApiModuleFileBuilder.generate(td, this, "api-${moduleName.get()}", cyxbsGroup.value)
+      val moduleName = moduleName.get()
+      if (!moduleName.contains("/")) {
+        if (isNeedApiModule.get()) {
+          ChildModuleFileBuilder.generate(td, this,
+            moduleName, "api-${moduleName}", cyxbsGroup.value)
+        }
+        ParentModuleFileBuilder.generate(td, this, moduleName,
+          cyxbsGroup.value, isSingleModule.get(), dependModules.valueOrNull, dependLibraries.valueOrNull,
+          description.get())
+      } else {
+        val childModule = moduleName.substringAfter("/")
+        ChildModuleFileBuilder.generate(td, this, moduleName, childModule, cyxbsGroup.value)
       }
     }
   }

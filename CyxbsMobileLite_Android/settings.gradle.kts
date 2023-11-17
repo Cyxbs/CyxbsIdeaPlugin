@@ -1,3 +1,5 @@
+import java.io.File
+
 pluginManagement {
   includeBuild("build-logic")
   repositories {
@@ -16,32 +18,32 @@ rootProject.name = "CyxbsMobileLite_Android"
 val excludeList: List<String> = listOf(
 )
 
-rootDir.listFiles { file ->
-  when (file.name) {
-    "cyxbs-applications",
-    "cyxbs-components",
-    "cyxbs-functions",
-    "cyxbs-pages" -> true
-    else -> false
-  }
-}!!.map {
-  it.listFiles()!!.toList()
-}.flatten().filter {
-  // 以部分文件来过滤出那些是模块
-  it.isDirectory
-      && it.resolve("build.gradle.kts").exists()
-      && !it.resolve("settings.gradle.kts").exists()
-}.forEach {
-  if (!excludeList.contains(it.name)) {
-    include(":${it.parentFile.name}:${it.name}")
-    val apiFile = it.resolve("api-${it.name}")
-    if (!excludeList.contains(apiFile.name)) {
-      if (apiFile.exists() && apiFile.resolve("build.gradle.kts").exists()) {
-        include(":${it.parentFile.name}:${it.name}:${apiFile.name}")
-      }
+fun includeModule(topName: String, file: File) {
+  if (!file.resolve("settings.gradle.kts").exists()) {
+    if (file.resolve("build.gradle.kts").exists()) {
+      var path = ":${file.name}"
+      var parentFile = file.parentFile
+      do {
+        path = ":${parentFile.name}$path"
+        parentFile = parentFile.parentFile
+      } while (parentFile.name == topName)
+      include(path)
     }
   }
+  // 递归寻找所有子模块
+  file.listFiles()?.filter {
+    it.name != "src" // 去掉 src 文件夹
+        && !it.resolve("settings.gradle.kts").exists() // 去掉独立的项目模块，比如 build-logic
+        && !excludeList.contains(it.name) // 去掉被忽略的模块
+  }?.forEach {
+    includeModule(topName, it)
+  }
 }
+
+includeModule("cyxbs-applications", rootDir.resolve("cyxbs-applications"))
+includeModule("cyxbs-components", rootDir.resolve("cyxbs-components"))
+includeModule("cyxbs-functions", rootDir.resolve("cyxbs-functions"))
+includeModule("cyxbs-pages", rootDir.resolve("cyxbs-pages"))
 /**
  * 如果你使用 AS 自带的模块模版，他会自动添加 include()，请删除掉，因为上面会自动读取
  * 请注意:

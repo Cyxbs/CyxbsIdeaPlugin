@@ -95,10 +95,15 @@ object ModulesDataSource {
 
   private fun visitCyxbsGroup(cyxbsGroupFile: File, visitor: (parent: File) -> Unit) {
     cyxbsGroupFile.listFiles { file ->
-      file.resolve("build.gradle.kts").exists()
-          && ModuleProperties.getVisible(file)
+      // 目前最多只有二级子模块
+      file.isModule() && ModuleProperties.getVisible(file)
+          || file.listFiles()?.any { it.isModule() && ModuleProperties.getVisible(file) } ?: false
     }?.forEach {
       visitor.invoke(it)
     }
+  }
+
+  private fun File.isModule(): Boolean {
+    return resolve("build.gradle.kts").exists()
   }
 }

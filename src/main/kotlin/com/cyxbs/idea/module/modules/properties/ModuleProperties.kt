@@ -18,24 +18,19 @@ object ModuleProperties {
 
   fun get(file: File): Properties? {
     if (mModuleProperties.contains(file)) return mModuleProperties.getValue(file)
-    if (file.resolve("build.gradle.kts").exists()) {
-      val propertiesFile = file.resolve(FILE_NAME)
-      if (propertiesFile.exists()) {
-        val properties = Properties()
-        return try {
-          properties.load(propertiesFile.inputStream().reader())
-          mModuleProperties[file] = properties
-          properties
-        } catch (e: Exception) {
-          null
-        }
-      } else {
-        if (file.name.startsWith("api-")) {
-          return get(file.parentFile)
-        }
+    val propertiesFile = file.resolve(FILE_NAME)
+    return if (propertiesFile.exists()) {
+      val properties = Properties()
+      try {
+        properties.load(propertiesFile.inputStream().reader())
+        mModuleProperties[file] = properties
+        properties
+      } catch (e: Exception) {
+        null
       }
+    } else {
+      return file.parentFile?.let { get(it) }
     }
-    return null
   }
 }
 

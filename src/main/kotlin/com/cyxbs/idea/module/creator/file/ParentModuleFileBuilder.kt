@@ -10,12 +10,12 @@ import com.cyxbs.idea.module.utils.capitalized
 import java.io.File
 
 /**
- * 普通模块构建器
+ * 父模块构建器
  *
  * @author 985892345
  * 2023/10/6 09:22
  */
-object CommonModuleFileBuilder {
+object ParentModuleFileBuilder {
 
   fun generate(
     moduleData: ModuleTemplateData,
@@ -30,7 +30,7 @@ object CommonModuleFileBuilder {
     val moduleDir = moduleData.rootDir.resolve(cyxbsGroup.groupName)
       .resolve(moduleName)
     recipeExecutor.apply {
-      generateCodeDir(moduleDir, cyxbsGroup, moduleName)
+      generateCodeDir(moduleDir, isSingleModule, cyxbsGroup, moduleName)
       generateBuildGradle(moduleDir, isSingleModule, dependModules, dependLibraries)
       generateAndroidManifest(moduleDir)
       generateSingleModuleEntry(moduleDir, moduleName, cyxbsGroup, isSingleModule)
@@ -40,23 +40,33 @@ object CommonModuleFileBuilder {
 
   private fun RecipeExecutor.generateCodeDir(
     moduleDir: File,
+    isSingleModule: Boolean,
     cyxbsGroup: CyxbsGroup,
     moduleName: String,
   ) {
-    val dir = moduleDir
+    val mainDir = moduleDir
       .resolve("src")
       .resolve("main")
+    val codeDir = mainDir
       .resolve("java")
       .resolve("com")
       .resolve("cyxbs")
       .resolve(cyxbsGroup.step)
       .resolve(moduleName)
-    createDirectory(dir)
-    val resDir = moduleDir
-      .resolve("src")
-      .resolve("main")
-      .resolve("res")
-    createDirectory(resDir)
+    createDirectory(codeDir)
+    if (cyxbsGroup == CyxbsGroup.Pages) {
+      val resDir = mainDir.resolve("res")
+      createDirectory(resDir.resolve("drawable"))
+      createDirectory(resDir.resolve("drawable-xxhdpi"))
+      createDirectory(resDir.resolve("layout"))
+      save(ftResources(), resDir.resolve("values").resolve("strings.xml"))
+      save(ftResources(), resDir.resolve("values").resolve("colors.xml"))
+      save(ftResources(), resDir.resolve("values-night").resolve("colors.xml"))
+    }
+    if (isSingleModule) {
+      val singleResDir = mainDir.resolve("single-res")
+      createDirectory(singleResDir.resolve("layout"))
+    }
   }
 
   private fun RecipeExecutor.generateBuildGradle(

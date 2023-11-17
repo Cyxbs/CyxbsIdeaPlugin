@@ -125,8 +125,8 @@ object LibrariesDataSource {
   private fun readInfo(lines: List<String>, start: Int, end: Int): List<String> {
     if (start > end) return emptyList()
     val result = mutableListOf<String>()
-    val multilineInfoRegex = Regex("^ *\\*.+")
-    val lineInfoRegex = Regex("^ *//.+")
+    val multilineInfoRegex = Regex("^ *\\*.+") // 多行注释
+    val lineInfoRegex = Regex("^ *//.+") // 行注释
     for (index in start .. end) {
       val line = lines[index]
       when {
