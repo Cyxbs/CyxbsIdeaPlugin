@@ -53,8 +53,9 @@ class CyxbsWizardModel(
           cyxbsGroup.value, isSingleModule.get(), dependModules.valueOrNull, dependLibraries.valueOrNull,
           description.get())
       } else {
+        val parentModule = moduleName.substringBefore("/")
         val childModule = moduleName.substringAfter("/")
-        ChildModuleFileBuilder.generate(td, this, moduleName, childModule, cyxbsGroup.value)
+        ChildModuleFileBuilder.generate(td, this, parentModule, childModule, cyxbsGroup.value)
       }
     }
   }
