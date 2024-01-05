@@ -53,7 +53,7 @@ fun ftAndroidManifest() = """
 
 fun ftSingleModuleEntry(
   packageName: String,
-  moduleName: String,
+  classNamePrefix: String,
 ): String {
   val template = FileTemplateManager.getInstance(ProjectManager.getInstance().defaultProject)
   val header = template.getDefaultTemplate("File Header.java").text
@@ -62,11 +62,11 @@ fun ftSingleModuleEntry(
 
     import android.content.Context
     import com.cyxbs.components.singlemodule.ISingleModuleEntry
-    import com.g985892345.provider.annotation.SingleImplProvider
+    import com.g985892345.provider.api.annotation.ImplProvider
 
     $header
-    @SingleImplProvider
-    object ${moduleName.capitalized()}SingleModuleEntry : ISingleModuleEntry {
+    @ImplProvider
+    object ${classNamePrefix.capitalized()}SingleModuleEntry : ISingleModuleEntry {
       override fun getPage(context: Context): ISingleModuleEntry.Page {
         throw NotImplementedError()
       }

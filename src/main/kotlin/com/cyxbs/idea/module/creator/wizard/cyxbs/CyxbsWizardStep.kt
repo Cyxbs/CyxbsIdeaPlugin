@@ -61,12 +61,7 @@ open class CyxbsWizardStep(
             component.isSelected = model.isSingleModule.get()
           }
         }
-    }.bottomGap(BottomGap.SMALL).apply {
-      model.moduleName.addListener {
-        // 创建子模块时不显示
-        visible(!model.moduleName.get().contains("/"))
-      }
-    }
+    }.bottomGap(BottomGap.SMALL)
   }
 
   override fun createMainPanel(): JComponent {

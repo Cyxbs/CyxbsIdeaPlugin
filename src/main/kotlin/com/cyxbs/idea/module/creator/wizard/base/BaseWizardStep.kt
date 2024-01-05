@@ -81,7 +81,7 @@ abstract class BaseWizardStep(
             text(model.moduleName.get())
             whenTextChangedFromUi { model.moduleName.set(it) }
           }.focused()
-          .horizontalAlign(HorizontalAlign.FILL)
+          .align(Align.FILL)
           .apply {
             comment(commentProperty.get(), 100)
             commentProperty.afterChange { comment?.text = it }
@@ -98,13 +98,11 @@ abstract class BaseWizardStep(
           .apply {
             text(model.description.get())
             whenTextChangedFromUi { model.description.set(it) }
-          }.horizontalAlign(HorizontalAlign.FILL)
+          }.align(Align.FILL)
           .comment("建议一句话高度概括该模块负责哪个页面或功能")
       }
       row {
-        val placeholder = placeholder()
-          .horizontalAlign(HorizontalAlign.FILL)
-        // todo horizontalAlign 将被移除，后面再改，官方也是用的这个，看 AbstractNewProjectWizardMultiStepBase
+        val placeholder = placeholder().align(Align.FILL)
         placeholder.component = stepMap[stepMap.first().key]
         stepProperty.afterChange {
           placeholder.component = stepMap[it]

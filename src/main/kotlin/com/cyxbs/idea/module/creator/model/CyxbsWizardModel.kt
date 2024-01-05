@@ -47,7 +47,8 @@ class CyxbsWizardModel(
       if (!moduleName.contains("/")) {
         if (isNeedApiModule.get()) {
           ChildModuleFileBuilder.generate(td, this,
-            moduleName, "api-${moduleName}", cyxbsGroup.value)
+            moduleName, "api-${moduleName}", cyxbsGroup.value, false, emptyList(), emptyList()
+          )
         }
         ParentModuleFileBuilder.generate(td, this, moduleName,
           cyxbsGroup.value, isSingleModule.get(), dependModules.valueOrNull, dependLibraries.valueOrNull,
@@ -55,7 +56,9 @@ class CyxbsWizardModel(
       } else {
         val parentModule = moduleName.substringBefore("/")
         val childModule = moduleName.substringAfter("/")
-        ChildModuleFileBuilder.generate(td, this, parentModule, childModule, cyxbsGroup.value)
+        ChildModuleFileBuilder.generate(td, this,
+          parentModule, childModule, cyxbsGroup.value,
+          isNeedApiModule.get(), dependModules.valueOrNull, dependLibraries.valueOrNull)
       }
     }
   }

@@ -30,10 +30,10 @@ object ParentModuleFileBuilder {
     val moduleDir = moduleData.rootDir.resolve(cyxbsGroup.groupName)
       .resolve(moduleName)
     recipeExecutor.apply {
-      generateCodeDir(moduleDir, isSingleModule, cyxbsGroup, moduleName)
+      generateCodeDir(moduleDir, isSingleModule, cyxbsGroup)
       generateBuildGradle(moduleDir, isSingleModule, dependModules, dependLibraries)
       generateAndroidManifest(moduleDir)
-      generateSingleModuleEntry(moduleDir, moduleName, cyxbsGroup, isSingleModule)
+      generateSingleModuleEntry(moduleDir, cyxbsGroup, isSingleModule)
       generateModuleProperties(moduleDir, description)
     }
   }
@@ -42,7 +42,6 @@ object ParentModuleFileBuilder {
     moduleDir: File,
     isSingleModule: Boolean,
     cyxbsGroup: CyxbsGroup,
-    moduleName: String,
   ) {
     val mainDir = moduleDir
       .resolve("src")
@@ -52,7 +51,7 @@ object ParentModuleFileBuilder {
       .resolve("com")
       .resolve("cyxbs")
       .resolve(cyxbsGroup.step)
-      .resolve(moduleName)
+      .resolve(moduleDir.name)
     createDirectory(codeDir)
     if (cyxbsGroup == CyxbsGroup.Pages) {
       val resDir = mainDir.resolve("res")
@@ -92,19 +91,18 @@ object ParentModuleFileBuilder {
 
   private fun RecipeExecutor.generateSingleModuleEntry(
     moduleDir: File,
-    moduleName: String,
     cyxbsGroup: CyxbsGroup,
     isSingleModule: Boolean,
   ) {
     if (!isSingleModule) return
-    val singlePackageName = "com.cyxbs.${cyxbsGroup.step}.${moduleName}.single"
+    val singlePackageName = "com.cyxbs.${cyxbsGroup.step}.${moduleDir.name}.single"
     save(
-      ftSingleModuleEntry(singlePackageName, moduleName),
+      ftSingleModuleEntry(singlePackageName, moduleDir.name),
       moduleDir.resolve("src")
         .resolve("main")
         .resolve("single")
         .resolve(singlePackageName.replace(".", File.separator))
-        .resolve("${moduleName.capitalized()}SingleModuleEntry.kt"))
+        .resolve("${moduleDir.name.capitalized()}SingleModuleEntry.kt"))
   }
 
   private fun RecipeExecutor.generateModuleProperties(

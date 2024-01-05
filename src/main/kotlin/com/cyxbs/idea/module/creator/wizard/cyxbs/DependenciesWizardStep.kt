@@ -14,9 +14,7 @@ import com.cyxbs.idea.module.modules.properties.CyxbsProperties
 import com.cyxbs.idea.module.utils.capitalized
 import com.intellij.ui.IdeBorderFactory
 import com.intellij.util.ui.JBInsets
-import org.jetbrains.kotlin.idea.gradleTooling.get
 import java.awt.GridLayout
-import java.io.File
 import javax.swing.JComponent
 import javax.swing.JPanel
 import kotlin.reflect.KClass
@@ -224,10 +222,10 @@ class DependenciesWizardStep(
 
   /**
    * 配置 [CheckableType.Checkbox.isDefault]
-   * @param keywords 关键词集合，由 [TreeNodeData.title] 进行匹配
+   * @param moduleName 由 [TreeNodeData.title] 进行匹配
    *
    */
-  private fun TreeNodeData.configDefault(keywords: List<String>) {
+  private fun TreeNodeData.configDefault(moduleName: List<String>) {
     fun config(data: TreeNodeData) {
       when (data.checkableType) {
         CheckableType.Catalog -> {
@@ -238,7 +236,7 @@ class DependenciesWizardStep(
           }
         }
         is CheckableType.Checkbox -> {
-          if (keywords.any { data.title.contains(it) }) {
+          if (moduleName.any { data.title == it }) {
             data.checkableType.isDefault = true
           }
           if (data.treeNode is TreeNodeType.ParentNode) {
